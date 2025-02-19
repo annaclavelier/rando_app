@@ -1,12 +1,13 @@
 import Alert from "./components/Alert";
-import ListGroup from "./components/ListGroup";
+import Button from "./components/Button";
 
 function App() {
 
   return (
     <div>
       <Alert>Kepp <span>go</span>going!</Alert>
-    </div>
+      <Button onClick={()=>console.log("clicked")}>I can do it !</Button>
+    </div> 
   );
 }
 
