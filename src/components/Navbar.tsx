@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -14,10 +16,10 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <a className="navbar-brand" href="#">
+          <Link className="navbar-brand" to="/">
             Carnetd'Rando
-          </a>
-          <form className="d-flex mx-auto" role="search">
+          </Link>
+          <form className="d-flex mx-auto" role="search" style={{width:"45%"}}>
             <input
               className="form-control me-2"
               type="search"
@@ -30,9 +32,9 @@ const Navbar = () => {
           </form>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="btn btn-success" href="#">
+              <Link className="btn btn-success" to="/login">
                 Se connecter
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
