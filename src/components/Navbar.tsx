@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   return (
@@ -19,17 +20,7 @@ const Navbar = () => {
           <Link className="navbar-brand" to="/">
             Carnetd'Rando
           </Link>
-          <form className="d-flex mx-auto" role="search" style={{width:"45%"}}>
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Chercher une randonnée..."
-              aria-label="Chercher"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Chercher
-            </button>
-          </form>
+          <SearchBar/>
           <ul className="navbar-nav">
             <li className="nav-item">
               <Link className="btn btn-success" to="/login">

@@ -1,15 +1,7 @@
-import Navbar from '../components/Navbar'
-
 const Login = () => {
   return (
-    <>
-    <div className="container-fluid">
-      <Navbar />
-    </div>
-    <div className="container-fluid p-0">
-Se connecter    </div>
-  </>
-  )
-}
+      <div className="container m-5">Se connecter </div>
+  );
+};
 
-export default Login
+export default Login;
