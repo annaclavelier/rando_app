@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import randos from "../datafixtures/rando";
+import CardRando from "../components/CardRando";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -23,7 +24,12 @@ const SearchResults = () => {
         </h3>
         <hr />
       </div>
-      <div id="results"></div>
+      <div id="results" className="row">
+        {filteredRandos.map((item, index) => (
+          <CardRando key={item.id} id={item.id} titre={item.titre} massif={item.massif} difficulte={item.difficulte}/>
+ 
+        ))}
+      </div>
     </div>
   );
 };
