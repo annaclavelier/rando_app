@@ -1,9 +1,14 @@
-interface Rando{
+export interface Rando{
     id: number;
     titre: string;
     difficulte: string;
     massif: string;
     image?: string;
+}
+
+export function findRando(id:number=1){
+    const found= randos.find((rando) => rando.id === id);
+    return found ?? randos[0];
 }
 
 const randos : Rando[]= [
