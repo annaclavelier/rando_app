@@ -4,7 +4,7 @@ import CardRando from "../components/CardRando";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("query")?.toLowerCase() || ""; // Gestion de la casse
+  const query = searchParams.get("query")?.toLowerCase() ?? ""; // Gestion de la casse
 
   // Filtrer les randonnées qui contiennent le texte recherché dans le titre
   const filteredRandos = randos.filter((rando) =>
