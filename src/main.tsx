@@ -7,6 +7,7 @@ import ErrorPage from "./pages/Error.tsx";
 import Login from "./pages/Login.tsx";
 import SearchResults from "./pages/SearchResults.tsx";
 import Layout from "./Layout.tsx";
+import Rando from "./pages/Rando.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")!).render(
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="/rando/:id" element={<Rando/>} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
