@@ -1,20 +1,32 @@
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import { Rando, findRando } from "../datafixtures/rando";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const RandoPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // Trouver l'objet correspondant
   const rando: Rando = findRando(Number(id));
 
   return (
     <div className="container p-5">
+      <div>
+        <button className="btn ps-0 text-secondary" onClick={()=> navigate(-1)}>
+          <FontAwesomeIcon icon={faArrowLeft} /> Retour aux résultats de la
+          recherche
+        </button>
+      </div>
       <h1>{rando.titre}</h1>
       <hr />
       <div className="row">
         <div className="col">
           <div>
-           <h3> {rando.difficulte} - {rando.massif}</h3>
+            <h3>
+              {" "}
+              {rando.difficulte} - {rando.massif}
+            </h3>
           </div>
           <div>Etapes : ...</div>
         </div>
