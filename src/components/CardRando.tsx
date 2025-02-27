@@ -19,8 +19,8 @@ const CardRando = ({
   duree,
 }: Props) => {
   return (
-    <div className="card mb-3" style={{ maxWidth: "540px" }}>
-      <Link to={`/rando/${id}`}>
+    <div className="card mb-3" style={{ maxWidth: "540px", backgroundColor: "#436D3B" }}>
+      <Link to={`/rando/${id}`} className="link-light link-underline-opacity-0">
         <div className="row g-0">
           <div className="col-md-4">
             <img
