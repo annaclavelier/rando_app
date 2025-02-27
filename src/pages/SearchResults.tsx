@@ -26,8 +26,14 @@ const SearchResults = () => {
       </div>
       <div id="results" className="row">
         {filteredRandos.map((item, index) => (
-          <CardRando key={item.id} id={item.id} titre={item.titre} massif={item.massif} difficulte={item.difficulte}/>
- 
+          <CardRando
+            key={item.id}
+            id={item.id}
+            titre={item.titre}
+            massif={item.massif}
+            difficulte={item.difficulte}
+            duree = {item.duree}
+          />
         ))}
       </div>
     </div>

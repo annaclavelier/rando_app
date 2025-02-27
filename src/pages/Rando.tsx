@@ -25,7 +25,7 @@ const RandoPage = () => {
           <div>
             <h3>
               {" "}
-              {rando.difficulte} - {rando.massif}
+              {rando.difficulte} - {rando.massif} - { rando.duree}
             </h3>
           </div>
           <div>Etapes : ...</div>

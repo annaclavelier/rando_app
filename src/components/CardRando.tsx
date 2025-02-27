@@ -7,6 +7,7 @@ interface Props {
   difficulte: string;
   massif: string;
   image?: string;
+  duree: string;
 }
 
 const CardRando = ({
@@ -15,6 +16,7 @@ const CardRando = ({
   difficulte,
   massif,
   image = defaultPicture,
+  duree,
 }: Props) => {
   return (
     <div className="card mb-3" style={{ maxWidth: "540px" }}>
@@ -31,7 +33,7 @@ const CardRando = ({
             <div className="card-body">
               <h5 className="card-title">{titre}</h5>
               <p className="card-text">
-                {difficulte} - {massif}
+                {difficulte} - {massif} - {duree}
               </p>
             </div>
           </div>
