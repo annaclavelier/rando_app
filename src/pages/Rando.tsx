@@ -1,4 +1,4 @@
-import {useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Rando, findRando } from "../datafixtures/rando";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +13,10 @@ const RandoPage = () => {
   return (
     <div className="container p-5">
       <div>
-        <button className="btn ps-0 text-secondary" onClick={()=> navigate(-1)}>
+        <button
+          className="btn ps-0 text-secondary"
+          onClick={() => navigate(-1)}
+        >
           <FontAwesomeIcon icon={faArrowLeft} /> Retour aux résultats de la
           recherche
         </button>
@@ -24,11 +27,10 @@ const RandoPage = () => {
         <div className="col">
           <div>
             <h3>
-              {" "}
-              {rando.difficulte} - {rando.massif} - { rando.duree}
+              {rando.difficulte} - {rando.massif} - {rando.duree}
             </h3>
           </div>
-          <div>Etapes : ...</div>
+          <div>{rando.description}</div>
         </div>
         <div className="col">Carte</div>
       </div>
