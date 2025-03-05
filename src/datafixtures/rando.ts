@@ -6,6 +6,11 @@ export interface Rando {
   image?: string;
   description?: string;
   duree: string;
+  denivele?: number;
+  altitude_depart?: number;
+  point_vue?: boolean;
+  remarques?:string;
+  altitude_arrivee?: number;
 }
 
 export function findRando(id: number = 1) {
@@ -23,6 +28,9 @@ const randos: Rando[] = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nulla ullamcorper, volutpat tortor ac, fringilla lacus. Praesent scelerisque nisi sit amet metus blandit lobortis. Praesent pharetra est id nulla bibendum malesuada. Fusce malesuada porta est, id posuere justo ullamcorper eu. Curabitur ut sollicitudin lacus, vitae fringilla tellus. Aliquam neque odio, placerat vitae auctor vitae, feugiat suscipit dolor. Fusce ligula ligula, vestibulum facilisis urna a, vulputate condimentum est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque bibendum tincidunt odio id pharetra. Maecenas nibh turpis, bibendum nec magna in, posuere congue lectus. Sed congue posuere sem sed maximus. Vivamus a libero in orci tristique vulputate. ",
     duree: "3h",
+    denivele: 373,
+    altitude_arrivee: 1406,
+    altitude_depart: 900
   },
   {
     id: 2,
