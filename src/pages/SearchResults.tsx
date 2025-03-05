@@ -26,7 +26,7 @@ const SearchResults = () => {
           </h3>
         </div>
         <div className="col">
-          <ButtonFilter />
+          <ButtonFilter onClick={() => console.log("filtré")} />
         </div>
         <hr />
       </div>
