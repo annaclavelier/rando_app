@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Rando, findRando } from "../datafixtures/rando";
+import { Rando, findRando } from "../data/rando";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
