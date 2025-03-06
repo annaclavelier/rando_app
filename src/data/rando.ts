@@ -1,8 +1,8 @@
 export interface Rando {
   id: number;
   titre: string;
-  difficulte: string;
-  massif: string;
+  difficulte: "Facile" | "Moyen" | "Difficile";
+  massif: "Chartreuse" | "Vercors" | "Oisan";
   image?: string;
   description?: string;
   duree: string;
