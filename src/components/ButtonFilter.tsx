@@ -1,20 +1,57 @@
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DifficultyFilter from "./filters/DifficultyFilter";
+import DurationFilter from "./filters/DurationFilter";
+import MassifFilter from "./filters/MassifFilter";
+import DeniveleFilter from "./filters/DeniveleFilter";
 
 interface Props {
-  onClick: () => void;
+  filters: {
+    difficulty: string;
+    duration: string;
+    massif: string;
+    denivele: string;
+  };
+  onChange: (filters: Props["filters"]) => void;
+  onUpdate: () => void;
+  onReinit: () => void;
 }
 
-const ButtonFilter = ({ onClick }: Props) => {
+const ButtonFilter = ({ filters, onReinit, onUpdate, onChange }: Props) => {
+  const badge = document.getElementById("badgeBtnFilter");
+
+  function hideBadge() {
+    if (badge) {
+      badge.classList.add("visually-hidden");
+    }
+  }
+
+  function displayBadge() {
+    if (
+      badge &&
+      (filters.difficulty != "" ||
+        filters.denivele != "" ||
+        filters.duration != "" ||
+        filters.massif != "")
+    ) {
+      badge.classList.remove("visually-hidden");
+    } else {
+      hideBadge();
+    }
+  }
+
   return (
     <>
       <button
-        className="btn btn-success btn-lg"
-        onClick={onClick}
+        className="btn btn-success btn-lg position-relative"
         data-bs-toggle="modal"
         data-bs-target="#filterModal"
       >
         Filtrer <FontAwesomeIcon icon={faFilter} />
+        <span
+          className="position-absolute top-0 start-100 translate-middle p-2 bg-primary border border-light rounded-circle visually-hidden"
+          id="badgeBtnFilter"
+        ></span>
       </button>
 
       <div
@@ -26,9 +63,7 @@ const ButtonFilter = ({ onClick }: Props) => {
         <div className="modal-dialog modal-xl">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-5">
-                Filtrer les résultats
-              </h1>
+              <h1 className="modal-title fs-5">Filtrer les résultats</h1>
               <button
                 type="button"
                 className="btn-close"
@@ -38,45 +73,22 @@ const ButtonFilter = ({ onClick }: Props) => {
             </div>
             <div className="modal-body">
               <form>
-                <div className="mb-3">
-                  <label htmlFor="difficulty" className="form-label">Difficulté</label>
-                  <select  className="form-select" name="difficulty" id="difficulty-select">
-                    <option value="" defaultChecked>
-                      Toutes
-                    </option>
-                    <option value="">Facile</option>
-                    <option value="">Moyen</option>
-                    <option value="">Difficile</option>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="duration" className="form-label">Durée</label>
-                  <select className="form-select" name="duree" id="duree-select">
-                    <option value="">moins d'1h</option>
-                    <option value="">plus d'1h</option>
-                    <option value="">plus de 2h</option>
-                    <option value="">plus de 3h</option>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="massif" className="form-label">Massif</label>
-                  <select  className="form-select" name="massif" id="massif-select">
-                    <option value="">Chartreuse</option>
-                    <option value="">Vercors</option>
-                    <option value="">Oisan</option>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="denivele" className="form-label">Dénivelé +</label>
-                  <select  className="form-select" name="denivele" id="denivele-select">
-                    <option value="">0 m</option>
-                    <option value="">100 m</option>
-                    <option value="">500 m</option>
-                  </select>
-                </div>
+                <DifficultyFilter
+                  value={filters.difficulty}
+                  onChange={(val) => onChange({ ...filters, difficulty: val })}
+                />
+                <DurationFilter
+                  value={filters.duration}
+                  onChange={(val) => onChange({ ...filters, duration: val })}
+                />
+                <MassifFilter
+                  value={filters.massif}
+                  onChange={(val) => onChange({ ...filters, massif: val })}
+                />
+                <DeniveleFilter
+                  value={filters.denivele}
+                  onChange={(val) => onChange({ ...filters, denivele: val })}
+                />
               </form>
             </div>
             <div className="modal-footer">
@@ -84,10 +96,22 @@ const ButtonFilter = ({ onClick }: Props) => {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
+                onClick={() => {
+                  onReinit();
+                  hideBadge();
+                }}
               >
                 Réinitialiser
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-bs-dismiss="modal"
+                onClick={() => {
+                  onUpdate();
+                  displayBadge();
+                }}
+              >
                 Mettre à jour les filtres
               </button>
             </div>
