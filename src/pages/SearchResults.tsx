@@ -26,7 +26,8 @@ const SearchResults = () => {
     setFilteredRandos(
       randos.filter((rando) => {
         return (
-          (!activeFilters.difficulty || rando.difficulte === activeFilters.difficulty) &&
+          (!activeFilters.difficulty ||
+            rando.difficulte === activeFilters.difficulty) &&
           (!activeFilters.duration || rando.duree === activeFilters.duration) &&
           (!activeFilters.massif || rando.massif === activeFilters.massif) &&
           (!activeFilters.denivele ||
@@ -69,7 +70,8 @@ const SearchResults = () => {
       randos.filter((rando) => {
         return (
           rando.titre.toLowerCase().includes(query) &&
-          (!activeFilters.difficulty || rando.difficulte === activeFilters.difficulty) &&
+          (!activeFilters.difficulty ||
+            rando.difficulte === activeFilters.difficulty) &&
           (!activeFilters.duration || rando.duree === activeFilters.duration) &&
           (!activeFilters.massif || rando.massif === activeFilters.massif) &&
           (!activeFilters.denivele ||
@@ -77,7 +79,7 @@ const SearchResults = () => {
         );
       })
     );
-  }, [query,activeFilters]);
+  }, [query, activeFilters]);
 
   return (
     <div className="container p-5">
@@ -110,6 +112,7 @@ const SearchResults = () => {
               difficulte={item.difficulte}
               duree={item.duree}
               image={item.image}
+              km={item.km}
             />
           </div>
         ))}

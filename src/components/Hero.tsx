@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Hero = () => {
   return (
     <div
@@ -22,9 +24,9 @@ const Hero = () => {
             <h4 className="mb-3 fw-bold">
               Partez à l'aventure avec Carnetd'Rando
             </h4>
-            <button className="btn btn-outline-light btn-lg fw-bold">
+            <Link to="/search?query=" className="btn btn-outline-light btn-lg fw-bold">
               Découvrir
-            </button>
+            </Link>
           </div>
         </div>
       </div>
