@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import defaultPicture from "../../public/assets/ecoutoux.jpg"
 
 interface Props {
   id: number;
@@ -8,6 +7,7 @@ interface Props {
   massif: string;
   image?: string;
   duree: string;
+  km: number;
 }
 
 const CardRando = ({
@@ -15,8 +15,9 @@ const CardRando = ({
   titre,
   difficulte,
   massif,
-  image = defaultPicture,
+  image = "/assets/ecoutoux.jpg",
   duree,
+  km
 }: Props) => {
   return (
     <div className="card mb-3" style={{ maxWidth: "540px", backgroundColor: "#436D3B" }}>
@@ -33,7 +34,7 @@ const CardRando = ({
             <div className="card-body">
               <h5 className="card-title">{titre}</h5>
               <p className="card-text">
-                {difficulte} - {massif} - {duree}
+                {difficulte} - {massif} - {duree} - {km} km
               </p>
             </div>
           </div>
