@@ -14,6 +14,56 @@ export interface Rando {
   altitude_arrivee?: number;
 }
 
+export class RandoModel implements Rando {
+  id!: number;
+  titre!: string;
+  difficulte!: "Facile" | "Moyen" | "Difficile";
+  massif!: "Chartreuse" | "Vercors" | "Oisan";
+  image?: string;
+  description?: string;
+  duree!: string;
+  denivele?: number;
+  altitude_depart?: number;
+  altitude_arrivee?: number;
+  point_vue?: boolean;
+  remarques?: string;
+  km!: number;
+
+  constructor(data: Rando) {
+    Object.assign(this, data);
+  }
+
+  // Méthode pour vérifier si la rando correspond aux filtres
+  correspondsToFilters(filters: {
+    difficulty?: string;
+    duration?: string;
+    massif?: string;
+    denivele?: string;
+  }): boolean {
+    return (
+      (!filters.difficulty || this.difficulte === filters.difficulty) &&
+      (!filters.duration || this.duree === filters.duration) &&
+      (!filters.massif || this.massif === filters.massif) &&
+      (!filters.denivele || this.getDeniveleCategory() === filters.denivele)
+    );
+  }
+
+  // Catégoriser le dénivelé
+  getDeniveleCategory(): string {
+    if (this.denivele === undefined) return "";
+    if (this.denivele < 300) return "moins de 300m";
+    if (this.denivele < 500) return "300 à 500m";
+    if (this.denivele < 800) return "500 à 800m";
+    if (this.denivele < 1000) return "800 à 1000m";
+    return "plus de 1000m";
+  }
+
+  // Afficher un résumé
+  getSummary(): string {
+    return `${this.titre} - ${this.difficulte}, ${this.duree}, ${this.massif}`;
+  }
+}
+
 export function findRando(id: number = 1) {
   const found = randos.find((rando) => rando.id === id);
   return found ?? randos[0];
