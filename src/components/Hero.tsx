@@ -1,5 +1,3 @@
-import heroImage from "../assets/hero-moutain.jpg"; 
-
 const Hero = () => {
   return (
       <div
@@ -7,7 +5,7 @@ const Hero = () => {
         style={{
           backgroundImage: `linear-gradient( rgba(216, 246, 222, 0.3) 0%,  /* 🌿 Vert clair avec 20% d'opacité */
           rgba(9, 191, 94, 0.5) 56%,   /* 🍃 Vert intermédiaire avec 20% d'opacité */
-          rgba(0, 193, 97, 0.8) 100%), url(${heroImage})`,
+          rgba(0, 193, 97, 0.8) 100%), url(/assets/hero-moutain.jpg)`,
           height: "50%",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

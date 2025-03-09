@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import defaultPicture from "../assets/ecoutoux.jpg";
+import defaultPicture from "../../public/assets/ecoutoux.jpg"
 
 interface Props {
   id: number;
