@@ -4,6 +4,7 @@ export interface Rando {
   difficulte: "Facile" | "Moyen" | "Difficile";
   massif: "Chartreuse" | "Vercors" | "Oisan";
   image?: string;
+  km: number;
   description?: string;
   duree: string;
   denivele?: number;
@@ -24,23 +25,25 @@ const randos: Rando[] = [
     titre: "L'écoutoux",
     difficulte: "Facile",
     massif: "Chartreuse",
-    image: "",
+    image: "./assets/ecoutoux.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nulla ullamcorper, volutpat tortor ac, fringilla lacus. Praesent scelerisque nisi sit amet metus blandit lobortis. Praesent pharetra est id nulla bibendum malesuada. Fusce malesuada porta est, id posuere justo ullamcorper eu. Curabitur ut sollicitudin lacus, vitae fringilla tellus. Aliquam neque odio, placerat vitae auctor vitae, feugiat suscipit dolor. Fusce ligula ligula, vestibulum facilisis urna a, vulputate condimentum est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque bibendum tincidunt odio id pharetra. Maecenas nibh turpis, bibendum nec magna in, posuere congue lectus. Sed congue posuere sem sed maximus. Vivamus a libero in orci tristique vulputate. ",
     duree: "3h",
     denivele: 373,
     altitude_arrivee: 1406,
-    altitude_depart: 900
+    altitude_depart: 900,
+    km: 7.5
   },
   {
     id: 2,
-    titre: "L'écoutoux",
-    difficulte: "Facile",
+    titre: "Mont Rachais",
+    difficulte: "Moyen",
     massif: "Chartreuse",
-    image: "",
+    image: "./assets/rachais.webp",
     description:
       "Donec consequat, urna non aliquet condimentum, nunc dolor laoreet dolor, in sodales purus ligula at justo. Sed quis velit metus. Vestibulum scelerisque rutrum eros, eget varius est sollicitudin sed. Praesent sit amet tellus eget sem laoreet efficitur. Nam malesuada non ipsum blandit semper. Integer felis nulla, molestie vel dolor ac, consectetur dictum dui. Mauris dapibus lacus vitae nulla porta, at imperdiet enim suscipit. Etiam a metus non lorem dapibus cursus a a nulla. ",
-    duree: "3h",
+    duree: "4h",
+    km: 9.5
   },
 ];
 
