@@ -1,3 +1,5 @@
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,19 +19,24 @@ const SearchBar = () => {
   };
 
   return (
-    <form className="d-flex mx-auto" style={{ width: "45%" }} onSubmit={handleSubmit}>
-      <input
-        className="form-control me-2"
-        type="search"
-        placeholder="Chercher une randonnée..."
-        aria-label="Chercher"
-        value={searchTerm}
-        onChange={handleChange}
-      />
-      <button className="btn btn-outline-success" type="submit">
-        Chercher
-      </button>
+    <form
+      className="d-flex mx-auto position-relative search-bar"
+      style={{ width: "45%" }}
+      onSubmit={handleSubmit}
+      role="search"
+  
+    >
+        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon position-absolute" />
+        <input
+          className="form-control search-input rounded-5 border-0"
+          type="search"
+          placeholder="Chercher une randonnée..."
+          aria-label="Chercher"
+          value={searchTerm}
+          onChange={handleChange}
+        />
     </form>
+  
   );
 };
 

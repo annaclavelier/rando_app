@@ -3,7 +3,7 @@ import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg" style={{backgroundColor:"#008844"}}>
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -17,7 +17,7 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand text-light" to="/">
             Carnetd'Rando
           </Link>
           <SearchBar/>

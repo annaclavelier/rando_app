@@ -1,0 +1,28 @@
+.search-input {
+  height: 45px;
+  padding-left: 40px; /* Espace pour l'icône */
+  background-color: #0EB662;
+  color: #A9F0CD;
+}
+
+.search-icon {
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #A9F0CD;
+}
+
+.search-bar{
+    color: #A9F0CD;
+}
+
+
+.search-input:focus{
+    background-color: #0EB662;
+    color: #A9F0CD;
+    box-shadow: 0 0 0 0.15rem rgba(169, 240, 205, 0.6); /* Contour lumineux */
+}
+
+.search-input::placeholder{
+    color: #A9F0CD;
+}
