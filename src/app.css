@@ -1,28 +1,43 @@
 .search-input {
   height: 45px;
   padding-left: 40px; /* Espace pour l'icône */
-  background-color: #0EB662;
-  color: #A9F0CD;
+  background-color: #0eb662;
+  color: #a9f0cd;
 }
 
 .search-icon {
   top: 50%;
   left: 15px;
   transform: translateY(-50%);
-  color: #A9F0CD;
+  color: #a9f0cd;
 }
 
-.search-bar{
-    color: #A9F0CD;
+.search-bar {
+  color: #a9f0cd;
 }
 
-
-.search-input:focus{
-    background-color: #0EB662;
-    color: #A9F0CD;
-    box-shadow: 0 0 0 0.15rem rgba(169, 240, 205, 0.6); /* Contour lumineux */
+.search-input:focus {
+  background-color: #0eb662;
+  color: #a9f0cd;
+  box-shadow: 0 0 0 0.15rem rgba(169, 240, 205, 0.6); /* Contour lumineux */
 }
 
-.search-input::placeholder{
-    color: #A9F0CD;
+.search-input::placeholder {
+  color: #a9f0cd;
+}
+
+.card-rando .col-md-4 {
+  overflow: hidden; /* Empêche l'image de dépasser */
+}
+
+.card-rando:hover{
+  box-shadow: 0 1rem 3rem rgba(0,0,0,0.175);
+}
+
+.card-rando img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-rando:hover img {
+  transform: scale(1.2);
 }
