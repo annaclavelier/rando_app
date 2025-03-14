@@ -102,9 +102,9 @@ const SearchResults = () => {
       </div>
 
       <hr />
-      <div id="results" className="row">
+      <div id="results" className="row gy-2">
         {filteredRandos.map((item) => (
-          <div className="col" key={item.id}>
+          <div className="col-md-6" key={item.id}>
             <CardRando
               id={item.id}
               titre={item.titre}
