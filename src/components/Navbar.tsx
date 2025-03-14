@@ -3,7 +3,7 @@ import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg" style={{backgroundColor:"#008844"}}>
+    <nav className="navbar navbar-expand-lg shadow-sm" style={{backgroundColor:"#008844"}}>
       <div className="container-fluid">
         <button
           className="navbar-toggler"
