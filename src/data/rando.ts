@@ -12,6 +12,7 @@ export interface Rando {
   point_vue?: boolean;
   remarques?:string;
   altitude_arrivee?: number;
+  galerie?: string[];
 }
 
 export class RandoModel implements Rando {

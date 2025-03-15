@@ -32,9 +32,12 @@ const RandoPage = () => {
           </div>
           <div>{rando.description}</div>
         </div>
-        <div className="col">Carte</div>
+        <div className="col bg-dark-subtle"></div>
       </div>
-      <div>Galerie Photos</div>
+      <br />
+      {rando.galerie && rando.galerie.length > 0 &&
+      <div>Galerie Images</div>
+      }
     </div>
   );
 };
