@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Rando, findRando } from "../data/rando";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Galerie from "../components/Galerie";
 
 const RandoPage = () => {
   const { id } = useParams();
@@ -35,9 +36,12 @@ const RandoPage = () => {
         <div className="col bg-dark-subtle"></div>
       </div>
       <br />
-      {rando.galerie && rando.galerie.length > 0 &&
-      <div>Galerie Images</div>
-      }
+      {rando.galerie && rando.galerie.length > 0 && rando.image && (
+        <div>
+          <h3>Galerie photos</h3>
+          <Galerie images={[rando.image,...rando.galerie]} />
+        </div>
+      )}
     </div>
   );
 };
