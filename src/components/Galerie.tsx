@@ -18,7 +18,6 @@ const Galerie = ({images}:Props) => {
   }, [scrollPosition]); // Exécute scrollTo dès que scrollPosition change
 
   function prev() {
-    console.log("prev");
     if (carouselInnerRef.current) {
       const cardWidth = carouselInnerRef.current.children[0]?.clientWidth || 0;
       setScrollPosition((prev) => Math.max(prev - cardWidth, 0)); // Assure que scrollPosition ne devient pas négatif
@@ -26,7 +25,6 @@ const Galerie = ({images}:Props) => {
   }
 
   function next() {
-    console.log("next");
     if (carouselInnerRef.current) {
       const cardWidth = carouselInnerRef.current.children[0]?.clientWidth || 0;
       const maxScroll = carouselInnerRef.current.scrollWidth - carouselInnerRef.current.clientWidth;
@@ -37,7 +35,7 @@ const Galerie = ({images}:Props) => {
   return (
     <>
       <div id="carouselGalerie" className="carousel">
-        <div ref={carouselInnerRef} className="carousel-inner p-2 overflow-x-auto">
+        <div ref={carouselInnerRef} className="carousel-inner p-2">
           {images.map((image, index) => (
             <div className="carousel-item d-inline-block" key={index} style={{ width: "300px" }}>
               <div className="card">
