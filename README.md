@@ -6,9 +6,13 @@ En phase de développement
 
 ## Technologies
 
+Frontend
 - Vite
 - React + TypeScript
 - Bootstrap
+
+Backend(API REST)
+- NodeJS
 
 ## Lancement
 
