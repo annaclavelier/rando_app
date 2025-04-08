@@ -1,14 +1,16 @@
 import { useSearchParams } from "react-router-dom";
-import randos, { Rando } from "../data/rando";
+import { Rando } from "../data/rando";
 import CardRando from "../components/CardRando";
 import ButtonFilter from "../components/ButtonFilter";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query")?.toLowerCase() ?? ""; // Gestion de la casse
   // Filtrer les randonnées qui contiennent le texte recherché dans le titre
 
+  const [allRandos, setAllRandos] = useState<Rando[]>([]);
   const [filteredRandos, setFilteredRandos] = useState<Rando[]>([]);
 
   // États pour les filtres
@@ -24,7 +26,7 @@ const SearchResults = () => {
   const handleUpdate = () => {
     setActiveFilters({ ...pendingFilters });
     setFilteredRandos(
-      randos.filter((rando) => {
+      allRandos.filter((rando) => {
         return (
           (!activeFilters.difficulty ||
             rando.difficulte === activeFilters.difficulty) &&
@@ -51,7 +53,7 @@ const SearchResults = () => {
       massif: "",
       denivele: "",
     });
-    setFilteredRandos(randos);
+    setFilteredRandos(allRandos);
   };
 
   // Fonction pour catégoriser le dénivelé
@@ -64,10 +66,21 @@ const SearchResults = () => {
     return "plus 1000m";
   };
 
+  // récupèrer les randonnées
+  useEffect(() => {
+    axios.get("/api/randos")
+      .then((response) => {
+        setAllRandos(response.data);
+      })
+      .catch((error) => {
+        console.error("Erreur lors du chargement des randonnées :", error);
+      });
+  }, []);
+
   // on appelle useEffect que si activeFilters est modifié ou la query !
   useEffect(() => {
     setFilteredRandos(
-      randos.filter((rando) => {
+      allRandos.filter((rando) => {
         return (
           rando.titre.toLowerCase().includes(query) &&
           (!activeFilters.difficulty ||
@@ -79,7 +92,7 @@ const SearchResults = () => {
         );
       })
     );
-  }, [query, activeFilters]);
+  }, [query, activeFilters, allRandos]);
 
   return (
     <div className="container p-5">

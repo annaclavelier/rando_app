@@ -1,15 +1,37 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Rando, findRando } from "../data/rando";
+import { Rando } from "../data/rando";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Galerie from "../components/Galerie";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const RandoPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  // Randonnée correspondante
+  const [rando, setRando] = useState<Rando | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Trouver l'objet correspondant
-  const rando: Rando = findRando(Number(id));
+  useEffect(() => {
+    const fetchRando = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/randos/${id}`);
+        setRando(response.data);
+      } catch (error) {
+        console.error("Erreur lors du chargement de la rando", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchRando();
+    }
+  }, [id]);
+
+  if (loading) return <div>Chargement...</div>;
+  if (!rando) return <div>Rando non trouvée.</div>;
 
   return (
     <div className="container p-5">
@@ -39,7 +61,7 @@ const RandoPage = () => {
       {rando.galerie && rando.galerie.length > 0 && rando.image && (
         <div>
           <h3>Galerie photos</h3>
-          <Galerie images={[rando.image,...rando.galerie]} />
+          <Galerie images={[rando.image, ...rando.galerie]} />
         </div>
       )}
     </div>

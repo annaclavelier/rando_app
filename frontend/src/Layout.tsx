@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import './app.css'
 
 const Layout = () => {
+
   return (
     <>
       <Navbar />
