@@ -50,7 +50,7 @@ const RandoPage = () => {
         <div className="col">
           <div>
             <h3>
-              {rando.difficulte} - {rando.massif} - {rando.duree}
+              {rando.difficulte} - {rando.massif} - {rando.duree}h
             </h3>
           </div>
           <div>{rando.description}</div>

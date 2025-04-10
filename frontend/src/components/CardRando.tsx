@@ -37,7 +37,7 @@ const CardRando = ({
             <div className="card-body">
               <h5 className="card-title">{titre}</h5>
               <p className="card-text">
-                {difficulte} - {massif} - {duree} - {km} km
+                {difficulte} - {massif} - {duree}h - {km} km
               </p>
             </div>
           </div>

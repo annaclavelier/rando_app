@@ -10,9 +10,10 @@ export interface Rando {
   denivele?: number;
   altitude_depart?: number;
   point_vue?: boolean;
-  remarques?:string;
+  remarques?: string;
   altitude_arrivee?: number;
   galerie?: string[];
+  auteur?: string;
 }
 
 export class RandoModel implements Rando {
@@ -29,6 +30,7 @@ export class RandoModel implements Rando {
   point_vue?: boolean;
   remarques?: string;
   km!: number;
+  auteur?: string;
 
   constructor(data: Rando) {
     Object.assign(this, data);
@@ -84,20 +86,23 @@ const randos: Rando[] = [
     altitude_arrivee: 1406,
     altitude_depart: 900,
     km: 7.5,
-    galerie:["/assets/ecoutoux-2.jpg", "/assets/ecoutoux-3.jpg", "/assets/vue-ecoutoux.jpg"]
+    galerie: [
+      "/assets/ecoutoux-2.jpg",
+      "/assets/ecoutoux-3.jpg",
+      "/assets/vue-ecoutoux.jpg",
+    ],
   },
   {
     id: 2,
     titre: "Mont Rachais",
     difficulte: "Moyen",
     massif: "Chartreuse",
-image: "./assets/rachais.webp",
+    image: "./assets/rachais.webp",
     description:
       "Donec consequat, urna non aliquet condimentum, nunc dolor laoreet dolor, in sodales purus ligula at justo. Sed quis velit metus. Vestibulum scelerisque rutrum eros, eget varius est sollicitudin sed. Praesent sit amet tellus eget sem laoreet efficitur. Nam malesuada non ipsum blandit semper. Integer felis nulla, molestie vel dolor ac, consectetur dictum dui. Mauris dapibus lacus vitae nulla porta, at imperdiet enim suscipit. Etiam a metus non lorem dapibus cursus a a nulla. ",
     duree: "4h",
     km: 9.5,
-    galerie:[]
-
+    galerie: [],
   },
 ];
 
