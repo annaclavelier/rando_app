@@ -31,3 +31,29 @@ router.get("/api/randos/:id", (req, res) => {
 
   res.json(rando_found);
 });
+
+
+router.get("/api/randos-search", (req, res) => {
+  const { query = "", difficulte, duration, massif, denivele } = req.query;
+
+  const getDeniveleCategory = (denivele) => {
+    if (denivele === undefined) return "";
+    if (denivele < 300) return "moins de 300m";
+    if (denivele < 500) return "300 à 500m";
+    if (denivele < 800) return "500 à 800m";
+    if (denivele < 1000) return "800 à 1000m";
+    return "plus 1000m";
+  };
+
+  const filtered = rando.randos.filter((item) => {
+    return (
+      item.titre.toLowerCase().includes(query.toLowerCase()) &&
+      (!difficulte || item.difficulte === difficulte) &&
+      (!duration || item.duree === duration) &&
+      (!massif || item.massif === massif) &&
+      (!denivele || getDeniveleCategory(item.denivele) === denivele)
+    );
+  });
+
+  res.json(filtered);
+});
