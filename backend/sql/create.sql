@@ -1,6 +1,6 @@
 CREATE TABLE UTILISATEUR (
-    pseudo varchar(255) PRIMARY KEY,
-    email varchar(255) NOT NULL UNIQUE,
+    email varchar(255) PRIMARY KEY,
+    pseudo varchar(255) UNIQUE NULLS NOT DISTINCT,
     mot_passe varchar(255) NOT NULL,
     nom varchar(100) NOT NULL ,
     prenom varchar(100) NOT NULL
@@ -18,7 +18,7 @@ CREATE TABLE RANDONNEE(
     km decimal,
     massif varchar(40),
     image varchar(255),
-    auteur varchar REFERENCES UTILISATEUR(pseudo)
+    auteur varchar REFERENCES UTILISATEUR(email)
 );
 
 CREATE TABLE IMAGE_SECONDAIRE(
