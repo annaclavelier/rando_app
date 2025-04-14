@@ -135,24 +135,25 @@ router.post('/api/register', async (req, res) => {
 });
 
 router.post('/api/login', async (req, res) => {
-  const { pseudo, mot_passe } = req.body;
+  const { email, mot_passe } = req.body;
 
   try {
-    const user = await db.query("SELECT pseudo, mot_passe FROM UTILISATEUR WHERE pseudo=$1",[pseudo])
+    const user = await db.query("SELECT * FROM UTILISATEUR WHERE email=$1",[email])
 
-    if (!user) {
-      return res.status(404).send('User not found');
+    if (!user.rows[0]) {
+      return res.status(404).send("Il n'existe pas de compte avec cet email !");
     }
 
-    const passwordMatch = await bcrypt.compare(mot_passe, user.rows[0].mot_passe);
+    const hashedPassword = user.rows[0].mot_passe;
+
+    const passwordMatch = await bcrypt.compare(mot_passe,hashedPassword);
 
     if (passwordMatch) {
-      res.send('Login successful');
+      res.send('Connexion réussie');
     } else {
-      res.status(401).send('Invalid credentials');
+      res.status(401).send('Identifiants incorrects');
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).send('An error occurred');
+    res.status(500).send('Erreur serveur');
   }
 });
