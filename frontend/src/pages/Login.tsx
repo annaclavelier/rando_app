@@ -2,12 +2,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "../components/Alert";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
+  const { auth, setAuth } = useAuth();
+
+  useEffect(()=>{
+    if (auth){
+      navigate("/");
+
+    }
+  })
 
   useEffect(() => {
     setErrMsg("");
@@ -33,6 +42,7 @@ const Login = () => {
         console.log(JSON.stringify(response?.data));
         if (response.status == 200) {
           navigate("/");
+          setAuth(response.data.utilisateur); 
           console.log("connecté");
         }
       })
