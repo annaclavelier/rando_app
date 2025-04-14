@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./db");
+const bcrypt = require('bcrypt');
 
 // start
 const router = express();
@@ -113,5 +114,45 @@ router.get("/api/users", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Erreur lors de la récupération des utilisateurs");
+  }
+});
+
+
+router.post('/api/register', async (req, res) => {
+  const { pseudo, email, mot_passe, nom, prenom } = req.body;
+
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(mot_passe, saltRounds);
+
+    const utilisateur = await db.query("INSERT INTO UTILISATEUR VALUES($1, $2, $3, $4, $5)", [pseudo, email, hashedPassword, nom, prenom]);
+
+    res.status(201).send('Utilisateur créé avec succès');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erreur lors de la création d'un utilisateur.");
+  }
+});
+
+router.post('/api/login', async (req, res) => {
+  const { pseudo, mot_passe } = req.body;
+
+  try {
+    const user = await db.query("SELECT pseudo, mot_passe FROM UTILISATEUR WHERE pseudo=$1",[pseudo])
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const passwordMatch = await bcrypt.compare(mot_passe, user.rows[0].mot_passe);
+
+    if (passwordMatch) {
+      res.send('Login successful');
+    } else {
+      res.status(401).send('Invalid credentials');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('An error occurred');
   }
 });
