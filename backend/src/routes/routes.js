@@ -1,54 +1,20 @@
 const express = require("express");
-const cors = require("cors");
-const db = require("./db");
+const router = express.Router();
+const db = require("../db");
 const bcrypt = require("bcrypt");
-const session = require("express-session");
 
-// start
-const router = express();
-
-const PORT = 8080;
-
-const corsOptions = {
-  origin: ["http://localhost:5173"],
-  credentials: true,
-};
-// authorize json
-router.use(express.json());
-router.use(cors(corsOptions));
-
-router.use(
-  session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: false, 
-      sameSite: "lax",
-      maxAge: 1000 * 60 * 60, // 1h
-    },
-  })
-);
-
-router.listen(PORT, () => {
-  console.log("Serveur started on port 8080");
-});
-
-// ================routes========================
-
-router.get("/api/randos", async (req, res) => {
+router.get("/randos", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM randonnee", []);
 
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Erreur lors de la récupération des utilisateurs");
+    res.status(500).send("Erreur lors de la récupération des randonnées");
   }
 });
 
-router.get("/api/randos/:id", async (req, res) => {
+router.get("/randos/:id", async (req, res) => {
   const id = parseInt(req.params.id);
 
   try {
@@ -75,7 +41,7 @@ router.get("/api/randos/:id", async (req, res) => {
   }
 });
 
-router.get("/api/randos-search", async (req, res) => {
+router.get("/randos-search", async (req, res) => {
   let { query = "", difficulte, duration, massif, denivele } = req.query;
   query = `%${query.toLowerCase()}%`;
 
@@ -126,7 +92,7 @@ router.get("/api/randos-search", async (req, res) => {
   }
 });
 
-router.get("/api/users", async (req, res) => {
+router.get("/users", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM utilisateur", []);
     res.send(result.rows);
@@ -136,17 +102,20 @@ router.get("/api/users", async (req, res) => {
   }
 });
 
-router.post("/api/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   const { pseudo, email, mot_passe, nom, prenom } = req.body;
 
   try {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(mot_passe, saltRounds);
 
-    const utilisateur = await db.query(
-      "INSERT INTO UTILISATEUR VALUES($1, $2, $3, $4, $5)",
-      [email, pseudo, hashedPassword, nom, prenom]
-    );
+    await db.query("INSERT INTO UTILISATEUR VALUES($1, $2, $3, $4, $5)", [
+      email,
+      pseudo,
+      hashedPassword,
+      nom,
+      prenom,
+    ]);
 
     res.status(201).send("Utilisateur créé avec succès");
   } catch (error) {
@@ -155,7 +124,7 @@ router.post("/api/register", async (req, res) => {
   }
 });
 
-router.post("/api/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, mot_passe } = req.body;
 
   try {
@@ -187,15 +156,16 @@ router.post("/api/login", async (req, res) => {
   }
 });
 
-router.get("/api/current-user", (req, res) => {
+router.get("/current-user", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ message: "Non connecté" });
   }
   res.json(req.session.user);
 });
 
-router.post("/api/logout", (req, res) => {
+router.post("/logout", (req, res) => {
   req.session.destroy();
   res.sendStatus(200);
 });
 
+module.exports = router;
