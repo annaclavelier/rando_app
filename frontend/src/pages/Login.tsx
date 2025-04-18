@@ -13,7 +13,7 @@ const Login = () => {
 
   useEffect(()=>{
     if (auth){
-      navigate("/");
+      navigate("/dashboard");
 
     }
   })
@@ -41,7 +41,7 @@ const Login = () => {
       .then((response) => {
         console.log(JSON.stringify(response?.data));
         if (response.status == 200) {
-          navigate("/");
+          navigate("/dashboard");
           setAuth(response.data.utilisateur); 
           console.log("connecté");
         }
