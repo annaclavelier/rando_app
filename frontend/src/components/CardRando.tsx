@@ -28,7 +28,7 @@ const CardRando = ({
         <div className="row g-0 h-100">
           <div className="col-md-4 h-100">
             <img
-              src={image}
+              src={`/assets/${image}`}
               className="h-100 w-100 rounded-start object-fit-cover"
               alt={titre}
             />

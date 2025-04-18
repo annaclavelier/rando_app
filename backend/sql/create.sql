@@ -18,11 +18,11 @@ CREATE TABLE RANDONNEE(
     km decimal,
     massif varchar(40),
     image varchar(255),
-    auteur varchar REFERENCES UTILISATEUR(email)
+    auteur varchar REFERENCES UTILISATEUR(email) ON DELETE CASCADE
 );
 
 CREATE TABLE IMAGE_SECONDAIRE(
     chemin varchar(255) PRIMARY KEY,
-    rando_id integer  REFERENCES RANDONNEE(id)
+    rando_id integer  REFERENCES RANDONNEE(id) ON DELETE CASCADE
 );
 
