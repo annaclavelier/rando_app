@@ -10,6 +10,7 @@ interface User {
 
 interface AuthContextType {
   auth: User | null;
+  isAuthenticated: boolean;
   setAuth: (user: User | null) => void;
 }
 
@@ -26,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, isAuthenticated: !!auth, setAuth }}>
       {children}
     </AuthContext.Provider>
   );
