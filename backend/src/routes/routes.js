@@ -2,6 +2,18 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db");
 const bcrypt = require("bcrypt");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "../frontend/public/assets");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // conserver le nom original
+  },
+});
+
+const upload = multer({ storage });
 
 // =====================RANDONNEES===================
 
@@ -100,10 +112,9 @@ router.get("/mes-randos", async (req, res) => {
   if (!email) return res.status(401).send("Non connecté");
 
   try {
-    const result = await db.query(
-      "SELECT * FROM randonnee WHERE auteur = $1",
-      [email]
-    );
+    const result = await db.query("SELECT * FROM randonnee WHERE auteur = $1", [
+      email,
+    ]);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -111,6 +122,56 @@ router.get("/mes-randos", async (req, res) => {
   }
 });
 
+// Add rando for current-user
+router.post("/rando", upload.single("image"), async (req, res) => {
+  const imageName = req.file.originalname;
+
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Non autorisé" });
+  }
+
+  const {
+    titre,
+    description,
+    difficulte,
+    denivele,
+    altitude_depart,
+    altitude_arrivee,
+    duree,
+    km,
+    massif,
+  } = req.body;
+
+  if (!titre || !description) {
+    return res
+      .status(400)
+      .json({ message: "Titre et description sont obligatoires." });
+  }
+
+  try {
+    const email = req.session.user.email;
+    await db.query(
+      "INSERT INTO RANDONNEE(titre, description,difficulte,denivele,altitude_depart, altitude_arrivee, duree, km, massif, image, auteur) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
+      [
+        titre,
+        description,
+        difficulte || null,
+        denivele ?? null,
+        altitude_depart ?? null,
+        altitude_arrivee ?? null,
+        duree ?? null,
+        km ?? null,
+        massif || null,
+        imageName,
+        email,
+      ]
+    );
+    res.status(201).send("Randonnée créée avec succès");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur serveur");
+  }
+});
 
 // ==========================UTILISATEURS============================
 router.get("/users", async (req, res) => {
