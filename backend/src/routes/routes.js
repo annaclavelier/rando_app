@@ -55,6 +55,18 @@ router.get("/randos/:id", async (req, res) => {
   }
 });
 
+router.delete("/rando/:id", async (req, res) => {
+  const id = parseInt(req.params.id);
+  try {
+    await db.query("DELETE FROM IMAGE_SECONDAIRE WHERE rando_id = $1", [id]);
+    await db.query("DELETE FROM randonnee WHERE id = $1", [id]);
+    res.status(202).send("Randonnée supprimée avec succès");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur lors de la suppression");
+  }
+});
+
 router.get("/randos-search", async (req, res) => {
   let { query = "", difficulte, duration, massif, denivele } = req.query;
   query = `%${query.toLowerCase()}%`;
