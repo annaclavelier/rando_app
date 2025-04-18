@@ -3,6 +3,8 @@ const router = express.Router();
 const db = require("../db");
 const bcrypt = require("bcrypt");
 
+// =====================RANDONNEES===================
+
 router.get("/randos", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM randonnee", []);
@@ -92,6 +94,25 @@ router.get("/randos-search", async (req, res) => {
   }
 });
 
+// ====================DONNEES UTILISATEUR CONNECTE =================
+router.get("/mes-randos", async (req, res) => {
+  const email = req.session.user?.email;
+  if (!email) return res.status(401).send("Non connecté");
+
+  try {
+    const result = await db.query(
+      "SELECT * FROM randonnee WHERE auteur = $1",
+      [email]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur serveur");
+  }
+});
+
+
+// ==========================UTILISATEURS============================
 router.get("/users", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM utilisateur", []);

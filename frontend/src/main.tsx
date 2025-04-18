@@ -11,6 +11,7 @@ import Layout from "./Layout.tsx";
 import Rando from "./pages/Rando.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import AuthenticatedRoute from "./components/AuthenticatedRoute.tsx";
+import MesRandos from "./pages/MesRandos.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/rando/:id" element={<Rando />} />
           <Route element={<AuthenticatedRoute />} >
             <Route path="/dashboard" element={<Dashboard/>}  />
+            <Route path="/my-randos" element={<MesRandos/>}/>
           </Route>
         </Route>
         <Route path="*" element={<ErrorPage />} />
