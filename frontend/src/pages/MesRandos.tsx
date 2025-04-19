@@ -59,6 +59,7 @@ function MesRandos() {
               <th>Durée</th>
               <th>Difficulté</th>
               <th>Dénivelé</th>
+              <th>Visibilité</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -67,22 +68,23 @@ function MesRandos() {
               <tr key={rando.id}>
                 <td>{rando.titre}</td>
                 <td>{rando.massif}</td>
-                <td>{rando.duree}</td>
+                <td>{rando.duree && `${rando.duree}h`}</td>
                 <td>{rando.difficulte}</td>
-                <td>{rando.denivele} m</td>
+                <td>{rando.denivele && `${rando.denivele}m`}</td>
+                <td>{rando.publique ? "Publique" : "Privée"}</td>
                 <td>
                   <div className="btn-group">
                     <button
                       className="btn btn-outline-primary"
                       title="Voir"
-                      onClick={() => navigate(`/rando/${rando.id}`)}
+                      onClick={() => navigate(`/my-rando/${rando.id}`)}
                     >
                       <FontAwesomeIcon icon={faEye} />
                     </button>
                     <button
                       className="btn btn-outline-secondary"
                       title="Modifier"
-                      onClick={() => navigate(`/edit-rando/${rando.id}`)}
+                      onClick={() => navigate(`/my-rando/${rando.id}/edit`)}
                     >
                       <FontAwesomeIcon icon={faPenToSquare} />
                     </button>

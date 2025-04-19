@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { Rando } from "../data/rando";
+import TooltipButton from "./TooltipButton";
 
 interface Props {
   mode: "create" | "edit";
@@ -21,6 +22,7 @@ function FormRando({ mode }: Props) {
     duree: undefined,
     km: undefined,
     massif: "Chartreuse",
+    publique: false,
   });
   const [image, setImage] = useState<File | null>(null);
 
@@ -41,8 +43,11 @@ function FormRando({ mode }: Props) {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, type, value, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +65,10 @@ function FormRando({ mode }: Props) {
         formData.append(key, value.toString());
       }
     });
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
 
     if (image) {
       formData.append("image", image);
@@ -91,7 +100,7 @@ function FormRando({ mode }: Props) {
       className="mt-4"
     >
       <div className="mb-3">
-        <label htmlFor="titre" className="form-label">
+        <label htmlFor="titre" className="form-label fw-semibold">
           Titre
         </label>
         <input
@@ -105,7 +114,7 @@ function FormRando({ mode }: Props) {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="description" className="form-label">
+        <label htmlFor="description" className="form-label fw-semibold">
           Description
         </label>
         <textarea
@@ -120,7 +129,10 @@ function FormRando({ mode }: Props) {
 
       <div className="row">
         <div className="col-md-4 mb-3">
-          <label htmlFor="Massif de montagne" className="form-label">
+          <label
+            htmlFor="Massif de montagne"
+            className="form-label fw-semibold"
+          >
             Massif
           </label>
           <select
@@ -136,7 +148,7 @@ function FormRando({ mode }: Props) {
           </select>
         </div>
         <div className="col-md-4 mb-3">
-          <label htmlFor="difficulté" className="form-label">
+          <label htmlFor="difficulté" className="form-label fw-semibold">
             Difficulté
           </label>
           <select
@@ -152,7 +164,10 @@ function FormRando({ mode }: Props) {
           </select>
         </div>
         <div className="col-md-4 mb-3">
-          <label htmlFor="denivelé en mètres" className="form-label">
+          <label
+            htmlFor="denivelé en mètres"
+            className="form-label fw-semibold"
+          >
             Dénivelé (m)
           </label>
           <input
@@ -167,7 +182,10 @@ function FormRando({ mode }: Props) {
 
       <div className="row">
         <div className="col-md-4 mb-3">
-          <label htmlFor="altitude de départ" className="form-label">
+          <label
+            htmlFor="altitude de départ"
+            className="form-label fw-semibold"
+          >
             Altitude départ (m)
           </label>
           <input
@@ -179,7 +197,10 @@ function FormRando({ mode }: Props) {
           />
         </div>
         <div className="col-md-4 mb-3">
-          <label htmlFor="Altitude arrivée en mètres" className="form-label">
+          <label
+            htmlFor="Altitude arrivée en mètres"
+            className="form-label fw-semibold"
+          >
             Altitude arrivée (m)
           </label>
           <input
@@ -191,7 +212,7 @@ function FormRando({ mode }: Props) {
           />
         </div>
         <div className="col-md-2 mb-3">
-          <label htmlFor="durée" className="form-label">
+          <label htmlFor="durée" className="form-label fw-semibold">
             Durée (h)
           </label>
           <input
@@ -204,7 +225,10 @@ function FormRando({ mode }: Props) {
           />
         </div>
         <div className="col-md-2 mb-3">
-          <label htmlFor="Distance en kilomètres" className="form-label">
+          <label
+            htmlFor="Distance en kilomètres"
+            className="form-label fw-semibold"
+          >
             Distance (km)
           </label>
           <input
@@ -217,32 +241,57 @@ function FormRando({ mode }: Props) {
           />
         </div>
       </div>
+      <div className="mb-3">
+        <div className="d-flex align-items-center mb-1">
+          <span className="me-2 fw-semibold">Visibilité</span>
+          <TooltipButton text_tooltip="Si vous cochez cette case, votre randonnée sera publique pour tous les utilisateurs." />
+        </div>
+
+        <div className="form-check form-switch">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="switchVisibilite"
+            name="publique"
+            checked={form.publique}
+            onChange={handleChange}
+          />
+
+          <label className="form-check-label" htmlFor="switchVisibilite">
+            Publique
+          </label>
+        </div>
+      </div>
+
       {mode === "edit" && form.image && !image && (
         <div className="mb-3">
-          <label htmlFor="Image actuelle" className="form-label">
+          <label htmlFor="Image actuelle" className="form-label fw-semibold">
             Image actuelle
           </label>
-          <button
-            type="button"
-            className="btn btn-outline-primary btn-sm"
-            onClick={() => setImage({} as File)} // forcer l'affichage du champ fichier
-          >
-            Changer l'image
-          </button>
+
           <div>
-            <img
-              src={`/assets/${form.image}`}
-              alt="Image actuelle"
-              className="img-fluid rounded mb-2"
-              style={{ maxHeight: "300px" }}
-            />
+            <button
+              type="button"
+              className="btn btn-outline-primary btn-sm"
+              onClick={() => setImage(null)} // forcer l'affichage du champ fichier
+            >
+              Changer l'image
+            </button>
+            <div>
+              <img
+                src={`/assets/${form.image}`}
+                alt="Image actuelle"
+                className="img-fluid rounded mb-2"
+                style={{ maxHeight: "300px" }}
+              />
+            </div>
           </div>
         </div>
       )}
 
       {(!form.image || image) && (
         <div className="mb-4">
-          <label htmlFor="Image principale" className="form-label">
+          <label htmlFor="Image principale" className="form-label fw-semibold">
             Nouvelle image
           </label>
           <input
