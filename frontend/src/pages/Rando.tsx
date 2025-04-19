@@ -5,6 +5,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Galerie from "../components/Galerie";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ReturnButton from "../components/ReturnButton";
 
 const RandoPage = () => {
   const { id } = useParams();
@@ -16,7 +17,9 @@ const RandoPage = () => {
   useEffect(() => {
     const fetchRando = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/randos/${id}`);
+        const response = await axios.get(
+          `http://localhost:8080/api/randos/${id}`
+        );
         setRando(response.data);
       } catch (error) {
         console.error("Erreur lors du chargement de la rando", error);
@@ -35,15 +38,8 @@ const RandoPage = () => {
 
   return (
     <div className="container p-5">
-      <div>
-        <button
-          className="btn ps-0 text-secondary"
-          onClick={() => navigate(-1)}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} /> Retour aux résultats de la
-          recherche
-        </button>
-      </div>
+      <ReturnButton link={-1} text="Retour aux résultats de la recherche" />
+
       <h1>{rando.titre}</h1>
       <hr />
       <div className="row">

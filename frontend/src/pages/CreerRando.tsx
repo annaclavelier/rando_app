@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 function CreerRando() {
   const navigate = useNavigate();
@@ -64,6 +66,14 @@ function CreerRando() {
 
   return (
     <div className="container p-5">
+      <div>
+        <button
+          className="btn ps-0 text-secondary"
+          onClick={() => navigate("/my-randos")}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} /> Retour à mes randonnées
+        </button>
+      </div>
       <h2>Créer une randonnée</h2>
       <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
         <input
