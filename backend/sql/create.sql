@@ -18,6 +18,7 @@ CREATE TABLE RANDONNEE(
     km decimal,
     massif varchar(40),
     image varchar(255),
+    publique boolean DEFAULT false,
     auteur varchar REFERENCES UTILISATEUR(email) ON DELETE CASCADE
 );
 

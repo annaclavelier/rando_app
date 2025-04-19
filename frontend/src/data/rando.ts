@@ -14,6 +14,7 @@ export interface Rando {
   altitude_arrivee?: number;
   galerie?: string[];
   auteur?: string;
+  publique: boolean;
 }
 
 export class RandoModel implements Rando {
@@ -31,6 +32,7 @@ export class RandoModel implements Rando {
   remarques?: string;
   km!: number;
   auteur?: string;
+  publique!: boolean;
 
   constructor(data: Rando) {
     Object.assign(this, data);
@@ -91,6 +93,7 @@ const randos: Rando[] = [
       "/assets/ecoutoux-3.jpg",
       "/assets/vue-ecoutoux.jpg",
     ],
+    publique: true,
   },
   {
     id: 2,
@@ -103,6 +106,7 @@ const randos: Rando[] = [
     duree: "4h",
     km: 9.5,
     galerie: [],
+    publique: true,
   },
 ];
 
