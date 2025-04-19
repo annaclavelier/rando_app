@@ -30,9 +30,9 @@ const Navbar = () => {
           <ul className="navbar-nav">
             <li className="nav-item">
               {auth ? (
-                <>
+                <span className="text-white text-capitalize">
                   {auth.prenom} {auth.nom}
-                </>
+                </span>
               ) : (
                 <Link className="btn btn-success" to="/login">
                   Se connecter
