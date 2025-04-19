@@ -85,9 +85,15 @@ router.get("/randos-search", async (req, res) => {
   }
 
   if (duration) {
-    sql += ` AND duree = $${i}`;
-    params.push(duration);
-    i++;
+    if (duration === "moins d'1h") {
+      sql += " AND duree < 1 ";
+    } else if (duration == "1h à 2h") {
+      sql += " AND duree >= 1 AND duree <= 2";
+    } else if (duration == "2h à 3h") {
+      sql += " AND duree >= 2 AND duree <= 3";
+    } else if (duration == "plus de 3h") {
+      sql += " AND duree > 3";
+    }
   }
 
   if (massif) {
@@ -97,7 +103,7 @@ router.get("/randos-search", async (req, res) => {
   }
 
   if (denivele) {
-    // ici on filtre selon les catégories que tu définis côté client
+    // filtrer selon catégories
     if (denivele === "moins de 300m") {
       sql += ` AND denivele < $${i}`;
       params.push(300);
