@@ -157,7 +157,7 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
     duree,
     km,
     massif,
-    publique
+    publique,
   } = req.body;
 
   try {
@@ -211,7 +211,7 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
         massif || null,
         newImagePath,
         randoId,
-        publique
+        publique,
       ]
     );
 
@@ -348,6 +348,74 @@ router.get("/current-user", (req, res) => {
 router.post("/logout", (req, res) => {
   req.session.destroy();
   res.sendStatus(200);
+});
+
+// ==================FAVORIS==================
+
+// Mettre en favori une randonnée pour l'utilisateur actuel
+router.post("/favorite/:rando_id", async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Non connecté" });
+  }
+
+  const email = req.session.user.email;
+  const randoId = parseInt(req.params.rando_id);
+
+  try {
+    await db.query(
+      "INSERT INTO FAVORI (rando_id, utilisateur_email) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+      [randoId, email]
+    );
+    res.status(200).json({ message: "Randonnée ajoutée aux favoris" });
+  } catch (error) {
+    console.error("Erreur ajout favori:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+// Récupérer la liste des randonnées favorites de l'utilisateur actuel
+router.get("/favorites", async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Non connecté" });
+  }
+
+  const email = req.session.user.email;
+
+  try {
+    const result = await db.query(
+      `SELECT r.* 
+       FROM RANDONNEE r, FAVORI f 
+       WHERE r.id=f.rando_id 
+       AND f.utilisateur_email = $1`,
+      [email]
+    );
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Erreur récupération favoris:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+// Retirer des favoris une randonnée pour l'utilisateur actuel
+router.delete("/favorites/:rando_id", async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Non connecté" });
+  }
+
+  const email = req.session.user.email;
+  const randoId = parseInt(req.params.rando_id);
+
+  try {
+    await db.query(
+      "DELETE FROM FAVORI WHERE rando_id = $1 AND utilisateur_email = $2",
+      [randoId, email]
+    );
+    res.status(200).json({ message: "Randonnée retirée des favoris" });
+  } catch (error) {
+    console.error("Erreur suppression favori:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
 module.exports = router;

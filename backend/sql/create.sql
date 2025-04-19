@@ -27,3 +27,8 @@ CREATE TABLE IMAGE_SECONDAIRE(
     rando_id integer  REFERENCES RANDONNEE(id) ON DELETE CASCADE
 );
 
+CREATE TABLE FAVORI(
+    rando_id int REFERENCES RANDONNEE(id) ON DELETE CASCADE,
+    utilisateur_email varchar(255) REFERENCES UTILISATEUR(email) ON DELETE CASCADE,
+    PRIMARY KEY(rando_id, utilisateur_email)
+);
