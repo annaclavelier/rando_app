@@ -46,7 +46,6 @@ function Sidebar() {
             <button className="nav-link link-secondary" onClick={handleLogout}>
               Déconnexion
             </button>
-            <Link to="/logout"></Link>
           </li>
         </ul>
       </div>
