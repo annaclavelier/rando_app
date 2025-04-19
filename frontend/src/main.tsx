@@ -13,6 +13,8 @@ import Dashboard from "./pages/Dashboard.tsx";
 import AuthenticatedRoute from "./components/AuthenticatedRoute.tsx";
 import MesRandos from "./pages/MesRandos.tsx";
 import CreerRando from "./pages/CreerRando.tsx";
+import MaRando from "./pages/MaRando.tsx";
+import EditRando from "./pages/MaRandoEdit.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -27,6 +29,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/my-randos" element={<MesRandos />} />
             <Route path="/new-rando" element={<CreerRando />} />
+            <Route path="/my-rando/:id" element={<MaRando />} />
+            <Route path="/my-rando/:id/edit" element={<EditRando />} />
           </Route>
         </Route>
         <Route path="*" element={<ErrorPage />} />
