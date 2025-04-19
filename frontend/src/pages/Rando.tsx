@@ -1,7 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Rando } from "../data/rando";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Galerie from "../components/Galerie";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -9,7 +7,6 @@ import ReturnButton from "../components/ReturnButton";
 
 const RandoPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   // Randonnée correspondante
   const [rando, setRando] = useState<Rando | null>(null);
   const [loading, setLoading] = useState(true);
