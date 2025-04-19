@@ -73,8 +73,9 @@ router.delete("/rando/:id", async (req, res) => {
 router.get("/randos-search", async (req, res) => {
   let { query = "", difficulte, duration, massif, denivele } = req.query;
   query = `%${query.toLowerCase()}%`;
-
-  let sql = "SELECT * FROM randonnee WHERE LOWER(titre) LIKE $1";
+  // get only public randonnees
+  let sql =
+    "SELECT * FROM randonnee WHERE LOWER(titre) LIKE $1 AND visibilite='publique'";
   const params = [query];
   let i = 2;
 
@@ -156,6 +157,7 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
     duree,
     km,
     massif,
+    publique
   } = req.body;
 
   try {
@@ -193,7 +195,8 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
         duree = $7,
         km = $8,
         massif = $9,
-        image = $10
+        image = $10,
+        publique = $12
       WHERE id = $11
       RETURNING *`,
       [
@@ -208,6 +211,7 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
         massif || null,
         newImagePath,
         randoId,
+        publique
       ]
     );
 
