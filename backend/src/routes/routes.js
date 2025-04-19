@@ -75,7 +75,7 @@ router.get("/randos-search", async (req, res) => {
   query = `%${query.toLowerCase()}%`;
   // get only public randonnees
   let sql =
-    "SELECT * FROM randonnee WHERE LOWER(titre) LIKE $1 AND visibilite='publique'";
+    "SELECT * FROM randonnee WHERE LOWER(titre) LIKE $1 AND publique=true";
   const params = [query];
   let i = 2;
 
