@@ -4,7 +4,7 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const fs = require("fs");
-
+const path = require("path");
 const IMAGE_PATH = "../frontend/public/assets";
 
 const storage = multer.diskStorage({
@@ -220,7 +220,7 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
 
 // Add rando for current-user
 router.post("/rando", upload.single("image"), async (req, res) => {
-  const imageName = req.file.originalname;
+  const imageName = req.file ? req.file.filename : "";
 
   if (!req.session.user) {
     return res.status(401).json({ message: "Non autorisé" });
