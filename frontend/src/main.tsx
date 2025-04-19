@@ -15,6 +15,8 @@ import MesRandos from "./pages/MesRandos.tsx";
 import CreerRando from "./pages/CreerRando.tsx";
 import MaRando from "./pages/MaRando.tsx";
 import EditRando from "./pages/MaRandoEdit.tsx";
+import FavorisListe from "./pages/FavorisListe.tsx";
+import Favori from "./pages/Favori.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -31,6 +33,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/new-rando" element={<CreerRando />} />
             <Route path="/my-rando/:id" element={<MaRando />} />
             <Route path="/my-rando/:id/edit" element={<EditRando />} />
+            <Route path="/favorites" element={<FavorisListe />} />
+            <Route path="/favorites/:id" element={<Favori />} />
           </Route>
         </Route>
         <Route path="*" element={<ErrorPage />} />

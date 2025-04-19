@@ -1,12 +1,13 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { Rando } from "../data/rando";
-import RandoDetails from "../components/RandoDetails";
 import ReturnButton from "../components/ReturnButton";
+import { useParams } from "react-router";
+import { Rando } from "../data/rando";
+import axios from "axios";
+import RandoDetails from "../components/RandoDetails";
 
-const RandoPage = () => {
+function Favori() {
   const { id } = useParams();
+  // Randonnée correspondante
   const [rando, setRando] = useState<Rando | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,20 +25,21 @@ const RandoPage = () => {
       }
     };
 
-    if (id) fetchRando();
+    if (id) {
+      fetchRando();
+    }
   }, [id]);
 
   if (loading) return <div>Chargement...</div>;
   if (!rando) return <div>Rando non trouvée.</div>;
 
   return (
-    <>
-      <div className="container pt-4">
-        <ReturnButton link={-1} text="Retour aux résultats de la recherche" />
-      </div>
-      <RandoDetails rando={rando} />
-    </>
-  );
-};
+    <div className="container p-5">
+      <ReturnButton link={"/favorites"} text="Retour aux favoris" />
 
-export default RandoPage;
+      <RandoDetails rando={rando} />
+    </div>
+  );
+}
+
+export default Favori;
