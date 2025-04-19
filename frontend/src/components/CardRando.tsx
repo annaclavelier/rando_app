@@ -8,6 +8,7 @@ interface Props {
   image?: string;
   duree: string;
   km: number;
+  lien: string;
 }
 
 const CardRando = ({
@@ -18,13 +19,14 @@ const CardRando = ({
   image = "/assets/ecoutoux.jpg",
   duree,
   km,
+  lien
 }: Props) => {
   return (
     <div
       className="card mb-3 card-rando h-100"
       style={{ maxWidth: "540px", backgroundColor: "#436D3B", flexDirection:"row" }}
     >
-      <Link to={`/rando/${id}`} className="link-light link-underline-opacity-0">
+      <Link to={lien} className="link-light link-underline-opacity-0">
         <div className="row g-0 h-100">
           <div className="col-md-4 h-100">
             <img

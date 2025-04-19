@@ -83,6 +83,7 @@ const SearchResults = () => {
               duree={item.duree}
               image={item.image}
               km={item.km}
+              lien={`/rando/${item.id}`}
             />
           </div>
         ))}
