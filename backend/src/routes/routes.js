@@ -3,10 +3,13 @@ const router = express.Router();
 const db = require("../db");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
+const fs = require("fs");
+
+const IMAGE_PATH = "../frontend/public/assets";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "../frontend/public/assets");
+    cb(null, IMAGE_PATH);
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname); // conserver le nom original
@@ -131,6 +134,81 @@ router.get("/mes-randos", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Erreur serveur");
+  }
+});
+
+// Update
+router.put("/rando/:id", upload.single("image"), async (req, res) => {
+  const randoId = req.params.id;
+  const {
+    titre,
+    description,
+    difficulte,
+    denivele,
+    altitude_depart,
+    altitude_arrivee,
+    duree,
+    km,
+    massif,
+  } = req.body;
+
+  try {
+    // récupérer l'existante pour potentiellement supprimer l'ancienne image
+    const existing = await db.query("SELECT * FROM randonnee WHERE id = $1", [
+      randoId,
+    ]);
+    if (existing.rows.length === 0)
+      return res.status(404).json({ error: "Rando introuvable" });
+
+    if (existing.rows[0].auteur !== req.session.user?.email) {
+      return res.status(403).json({ error: "Accès refusé" });
+    }
+
+    const oldImage = existing.rows[0].image;
+    let newImagePath = oldImage;
+
+    if (req.file) {
+      newImagePath = req.file.filename;
+
+      // Supprimer l'ancienne image si elle existe
+      if (oldImage && fs.existsSync(path.join(IMAGE_PATH, oldImage))) {
+        fs.unlinkSync(path.join(IMAGE_PATH, oldImage));
+      }
+    }
+
+    const result = await db.query(
+      `UPDATE randonnee SET
+        titre = $1,
+        description = $2,
+        difficulte = $3,
+        denivele = $4,
+        altitude_depart = $5,
+        altitude_arrivee = $6,
+        duree = $7,
+        km = $8,
+        massif = $9,
+        image = $10
+      WHERE id = $11
+      RETURNING *`,
+      [
+        titre || null,
+        description || null,
+        difficulte || null,
+        denivele || null,
+        altitude_depart || null,
+        altitude_arrivee || null,
+        duree || null,
+        km || null,
+        massif || null,
+        newImagePath,
+        randoId,
+      ]
+    );
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Erreur update rando:", error);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 });
 
