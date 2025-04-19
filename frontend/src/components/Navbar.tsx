@@ -1,15 +1,9 @@
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
 
 const Navbar = () => {
-  const { auth, setAuth } = useAuth();
-
-  const handleLogout = async () => {
-    await axios.post("/api/logout", {}, { withCredentials: true });
-    setAuth(null);
-  };
+  const { auth } = useAuth();
 
   return (
     <nav
@@ -36,21 +30,9 @@ const Navbar = () => {
           <ul className="navbar-nav">
             <li className="nav-item">
               {auth ? (
-                <div className="dropdown">
-                  <button
-                    className="btn btn-success dropdown-toggle text-capitalize"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    {auth.prenom} {auth.nom}
-                  </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <button onClick={handleLogout} className="dropdown-item">Déconnexion</button>
-                    </li>
-                  </ul>
-                </div>
+                <>
+                  {auth.prenom} {auth.nom}
+                </>
               ) : (
                 <Link className="btn btn-success" to="/login">
                   Se connecter

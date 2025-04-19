@@ -16,6 +16,8 @@ function Dashboard() {
         <div>
           <Link to="/favorites">Mes favoris</Link>
         </div>
+
+        <div><Link to="/search?query=">Découvrir les randonnées en ligne</Link></div>
       </div>
   );
 }
