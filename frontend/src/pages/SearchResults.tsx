@@ -72,7 +72,7 @@ const SearchResults = () => {
       </div>
 
       <hr />
-      <div id="results" className="row gy-2">
+      <div id="results" className="row gy-4">
         {randos.map((item) => (
           <div className="col-md-6" key={item.id}>
             <CardRando

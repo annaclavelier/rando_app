@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { formatHeuresDecimal } from "../utils/FormatHours";
 
 function MesRandos() {
   const [randos, setRandos] = useState<Rando[]>([]);
@@ -69,7 +70,7 @@ function MesRandos() {
               <tr key={rando.id}>
                 <td>{rando.titre}</td>
                 <td>{rando.massif}</td>
-                <td>{rando.duree && `${rando.duree}h`}</td>
+                <td>{rando.duree && (<>{formatHeuresDecimal(parseFloat(rando.duree))}</>)}</td>
                 <td>{rando.difficulte}</td>
                 <td>{rando.denivele && `${rando.denivele}m`}</td>
                 <td>{rando.publique ? "Publique" : "Privée"}</td>
@@ -97,10 +98,11 @@ function MesRandos() {
                           "Voulez vous vraiment supprimer cette randonnée ?"
                         );
                         if (confirmation) {
-                          // call api
-                          deleteRando(rando.id);
-                          // delete from list
-                          setRandos(randos.splice(index, 1));
+                          deleteRando(rando.id).then(() => {
+                            setRandos((prevRandos) =>
+                              prevRandos.filter((r) => r.id !== rando.id)
+                            );
+                          });
                         }
                       }}
                     >

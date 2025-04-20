@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { Rando } from "../data/rando";
-import Galerie from "../components/Galerie";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ReturnButton from "../components/ReturnButton";
+import RandoDetails from "../components/RandoDetails";
 
 const MaRando = () => {
   const { id } = useParams();
@@ -38,27 +38,8 @@ const MaRando = () => {
       
       <ReturnButton link="/my-randos" text="Retour à mes randonnées" />
 
-      <h1>{rando.titre}</h1>
-      <hr />
-      <div className="row">
-        <div className="col">
-          <div>
-            <h3>
-              {rando.difficulte} - {rando.massif} - {rando.duree}h
-            </h3>
-          </div>
-          <div>{rando.description}</div>
-        </div>
-        <div className="col bg-dark-subtle"></div>
-      </div>
-      <br />
-      {rando.galerie && rando.galerie.length > 0 && rando.image && (
-        <div>
-          <h3>Galerie photos</h3>
-          <Galerie images={[rando.image, ...rando.galerie]} />
-        </div>
-      )}
-    </div>
+     <RandoDetails rando={rando}/>
+     </div>
   );
 };
 

@@ -3,6 +3,7 @@ import Galerie from "./Galerie";
 import FavoriteButton from "./FavoriteButton";
 import { useAuth } from "../context/AuthContext";
 import TooltipButton from "./TooltipButton";
+import { formatHeuresDecimal } from "../utils/FormatHours";
 
 interface Props {
   rando: Rando;
@@ -28,8 +29,15 @@ const RandoDetails = ({ rando }: Props) => {
       <div className="row">
         <div className="col">
           <h3>
-            {rando.difficulte} - {rando.massif} - {rando.duree}h
+            {rando.difficulte} - {rando.massif} - {formatHeuresDecimal(parseFloat(rando.duree))}
           </h3>
+          {rando.altitude_depart && rando.altitude_arrivee && rando.denivele && (
+            <h5>
+              Départ : {rando.altitude_depart}m - Arrivée :{" "}
+              {rando.altitude_arrivee} m  - Dénivelé positif : {rando.denivele} m
+            </h5>
+          )}
+
           <p>{rando.description}</p>
         </div>
         <div className="col bg-dark-subtle"></div>

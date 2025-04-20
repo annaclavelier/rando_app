@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { formatHeuresDecimal } from "../utils/FormatHours";
 
 interface Props {
   id: number;
@@ -39,7 +40,7 @@ const CardRando = ({
             <div className="card-body">
               <h5 className="card-title">{titre}</h5>
               <p className="card-text">
-                {difficulte} - {massif} - {duree}h - {km} km
+                {difficulte} - {massif} - {formatHeuresDecimal(parseFloat(duree))} - {km} km
               </p>
             </div>
           </div>
