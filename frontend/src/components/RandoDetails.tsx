@@ -1,17 +1,20 @@
 import { Rando } from "../data/rando";
 import Galerie from "./Galerie";
 import FavoriteButton from "./FavoriteButton";
+import { useAuth } from "../context/AuthContext";
 
 interface Props {
   rando: Rando;
 }
 
 const RandoDetails = ({ rando }: Props) => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="container p-4">
       <div className="d-flex align-items-center justify-content-between">
         <h1 className="mb-0">{rando.titre}</h1>
-        <FavoriteButton randoId={rando.id} />
+        {isAuthenticated && <FavoriteButton randoId={rando.id} />}
       </div>
       <hr />
       <div className="row">
