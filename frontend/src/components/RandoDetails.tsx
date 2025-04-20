@@ -2,6 +2,7 @@ import { Rando } from "../data/rando";
 import Galerie from "./Galerie";
 import FavoriteButton from "./FavoriteButton";
 import { useAuth } from "../context/AuthContext";
+import TooltipButton from "./TooltipButton";
 
 interface Props {
   rando: Rando;
@@ -14,7 +15,14 @@ const RandoDetails = ({ rando }: Props) => {
     <div className="container p-4">
       <div className="d-flex align-items-center justify-content-between">
         <h1 className="mb-0">{rando.titre}</h1>
-        {isAuthenticated && <FavoriteButton randoId={rando.id} />}
+        {isAuthenticated ? (
+          <FavoriteButton disabled={false} randoId={rando.id} />
+        ) : (
+          <TooltipButton text_tooltip="Connectez vous pour ajouter des favoris">
+            {" "}
+            <FavoriteButton disabled={true} randoId={rando.id} />
+          </TooltipButton>
+        )}
       </div>
       <hr />
       <div className="row">

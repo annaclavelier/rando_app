@@ -1,14 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 import { Tooltip } from "bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   text_tooltip: string;
   direction?: "top" | "bottom" | "left" | "right";
+  children: ReactNode;
 }
 
-const TooltipButton = ({ text_tooltip, direction = "top" }: Props) => {
+const TooltipButton = ({ text_tooltip, direction = "top", children }: Props) => {
   useEffect(() => {
     const tooltipTriggerList = document.querySelectorAll(
       '[data-bs-toggle="tooltip"]'
@@ -30,7 +29,7 @@ const TooltipButton = ({ text_tooltip, direction = "top" }: Props) => {
       data-bs-placement={direction}
       title={text_tooltip}
     >
-      <FontAwesomeIcon icon={faCircleQuestion} />
+      {children}
     </button>
   );
 };

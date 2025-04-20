@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { Rando } from "../data/rando";
 import TooltipButton from "./TooltipButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   mode: "create" | "edit";
@@ -244,7 +246,7 @@ function FormRando({ mode }: Props) {
       <div className="mb-3">
         <div className="d-flex align-items-center mb-1">
           <span className="me-2 fw-semibold">Visibilité</span>
-          <TooltipButton text_tooltip="Si vous cochez cette case, votre randonnée sera publique pour tous les utilisateurs." />
+          <TooltipButton text_tooltip="Si vous cochez cette case, votre randonnée sera publique pour tous les utilisateurs." >   <FontAwesomeIcon icon={faCircleQuestion} /></TooltipButton>
         </div>
 
         <div className="form-check form-switch">
