@@ -2,7 +2,7 @@ export interface Rando {
   id: number;
   titre: string;
   difficulte: "Facile" | "Moyen" | "Difficile";
-  massif: "Chartreuse" | "Vercors" | "Oisan";
+  massif: "Chartreuse" | "Vercors" | "Oisans";
   image?: string;
   km: number;
   description?: string;
@@ -21,7 +21,7 @@ export class RandoModel implements Rando {
   id!: number;
   titre!: string;
   difficulte!: "Facile" | "Moyen" | "Difficile";
-  massif!: "Chartreuse" | "Vercors" | "Oisan";
+  massif!: "Chartreuse" | "Vercors" | "Oisans";
   image?: string;
   description?: string;
   duree!: string;

@@ -146,7 +146,7 @@ function FormRando({ mode }: Props) {
             <option value="">-- Sélectionner --</option>
             <option value="Chartreuse">Chartreuse</option>
             <option value="Vercors">Vercors</option>
-            <option value="Oisan">Oisan</option>
+            <option value="Oisans">Oisans</option>
           </select>
         </div>
         <div className="col-md-4 mb-3">

@@ -19,7 +19,7 @@ const MassifFilter = ({ value, onChange }: Props) => {
         <option value="">Tous</option>
         <option value="Chartreuse">Chartreuse</option>
         <option value="Vercors">Vercors</option>
-        <option value="Oisan">Oisan</option>
+        <option value="Oisans">Oisans</option>
       </select>
     </div>
   );
