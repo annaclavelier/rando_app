@@ -1,18 +1,29 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import "./app.css";
-import { AuthProvider } from "./context/AuthContext";
+import { useAuth } from "./context/AuthContext";
 import Sidebar from "./components/Sidebar";
 
 const Layout = () => {
+  const { auth } = useAuth();
   return (
-      <AuthProvider>
-        <Navbar />
-        <Sidebar/>
-        <div className="container-fluid p-0">
-          <Outlet />
+    <>
+      <Navbar />
+      <div className="container-fluid">
+        <div className="row">
+          {/* Sidebar uniquement si l'utilisateur est connecté */}
+          {auth && (
+            <div className="col-12 col-md-2 p-0">
+              <Sidebar />
+            </div>
+          )}
+          {/* Contenu principal */}
+          <div className={`p-0 ${auth ? "col-12 col-md-10" : "col-12"}`}>
+            <Outlet />
+          </div>
         </div>
-      </AuthProvider>
+      </div>
+    </>
   );
 };
 

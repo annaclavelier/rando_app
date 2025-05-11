@@ -17,28 +17,31 @@ import MaRando from "./pages/MaRando.tsx";
 import EditRando from "./pages/MaRandoEdit.tsx";
 import FavorisListe from "./pages/FavorisListe.tsx";
 import Favori from "./pages/Favori.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/search" element={<SearchResults />} />
-          <Route path="/rando/:id" element={<Rando />} />
-          <Route element={<AuthenticatedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/my-randos" element={<MesRandos />} />
-            <Route path="/new-rando" element={<CreerRando />} />
-            <Route path="/my-rando/:id" element={<MaRando />} />
-            <Route path="/my-rando/:id/edit" element={<EditRando />} />
-            <Route path="/favorites" element={<FavorisListe />} />
-            <Route path="/favorites/:id" element={<Favori />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/search" element={<SearchResults />} />
+            <Route path="/rando/:id" element={<Rando />} />
+            <Route element={<AuthenticatedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/my-randos" element={<MesRandos />} />
+              <Route path="/new-rando" element={<CreerRando />} />
+              <Route path="/my-rando/:id" element={<MaRando />} />
+              <Route path="/my-rando/:id/edit" element={<EditRando />} />
+              <Route path="/favorites" element={<FavorisListe />} />
+              <Route path="/favorites/:id" element={<Favori />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </StrictMode>
 );
