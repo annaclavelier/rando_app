@@ -11,12 +11,11 @@ const Login = () => {
   const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
 
-  useEffect(()=>{
-    if (auth){
+  useEffect(() => {
+    if (auth) {
       navigate("/dashboard");
-
     }
-  })
+  });
 
   useEffect(() => {
     setErrMsg("");
@@ -42,7 +41,7 @@ const Login = () => {
         console.log(JSON.stringify(response?.data));
         if (response.status == 200) {
           navigate("/dashboard");
-          setAuth(response.data.utilisateur); 
+          setAuth(response.data.utilisateur);
           console.log("connecté");
         }
       })
@@ -54,7 +53,9 @@ const Login = () => {
     <div className="container p-5">
       <div className="h3">Connexion</div>
 
-      <Alert children={errMsg} visible={!!errMsg} theme="danger" />
+      <Alert visible={!!errMsg} theme="danger">
+        {errMsg}
+      </Alert>
 
       <form className="mb-3" onSubmit={handleSubmit}>
         <div className="mb-3">
