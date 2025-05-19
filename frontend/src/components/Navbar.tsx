@@ -1,49 +1,53 @@
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useAuth } from "../context/AuthContext";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  Collapse,
+  Nav,
+  NavItem,
+  Button,
+} from "reactstrap";
+import { useState } from "react";
 
-const Navbar = () => {
+const NavbarComponent = () => {
   const { auth } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <nav
-      className="navbar navbar-expand-lg shadow-sm"
-      style={{ backgroundColor: "#008844" }}
-    >
+    <Navbar expand="lg" className="shadow-sm" style={{ backgroundColor: "#008844" }}>
       <div className="container-fluid">
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <Link className="navbar-brand text-light" to="/">
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <NavbarBrand tag={Link} to="/" className="text-light">
             Carnetd'Rando
-          </Link>
-          <SearchBar />
-          <ul className="navbar-nav">
-            <li className="nav-item">
+          </NavbarBrand>
+
+          <div className="d-flex w-100 justify-content-lg-center justify-content-start my-2 my-lg-0" style={{ flex: 1 }}>
+            <SearchBar />
+          </div>
+
+          <Nav className="ms-auto" navbar>
+            <NavItem>
               {auth ? (
                 <span className="text-white text-capitalize">
                   {auth.prenom} {auth.nom}
                 </span>
               ) : (
-                <Link className="btn btn-success" to="/login">
+                <Button color="success" tag={Link} to="/login">
                   Se connecter
-                </Link>
+                </Button>
               )}
-            </li>
-          </ul>
-        </div>
+            </NavItem>
+          </Nav>
+        </Collapse>
       </div>
-    </nav>
+    </Navbar>
   );
 };
 
-export default Navbar;
+export default NavbarComponent;

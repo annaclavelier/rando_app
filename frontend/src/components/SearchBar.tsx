@@ -20,8 +20,7 @@ const SearchBar = () => {
 
   return (
     <form
-      className="d-flex mx-auto position-relative search-bar"
-      style={{ width: "45%" }}
+      className="d-flex position-relative search-bar"
       onSubmit={handleSubmit}
       role="search"
   

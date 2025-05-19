@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import NavbarCustom from "./components/Navbar";
 import "./app.css";
 import { useAuth } from "./context/AuthContext";
 import Sidebar from "./components/Sidebar";
@@ -8,7 +8,7 @@ const Layout = () => {
   const { auth } = useAuth();
   return (
     <>
-      <Navbar />
+      <NavbarCustom />
       <div className="container-fluid">
         <div className="row">
           {/* Sidebar uniquement si l'utilisateur est connecté */}
