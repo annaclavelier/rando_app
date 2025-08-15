@@ -11,7 +11,7 @@ const routes = require("./routes/routes");
 const PORT = process.env.PORT_BACK;
 
 const corsOptions = {
-  origin: [`http://localhost:${process.env.PORT_FRONT}`],
+  origin: [process.env.URL_FRONT],
   credentials: true,
 };
 // authorize json
