@@ -18,6 +18,7 @@ import EditRando from "./pages/MaRandoEdit.tsx";
 import FavorisListe from "./pages/FavorisListe.tsx";
 import Favori from "./pages/Favori.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
+import Profil from "./pages/Profil.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -37,6 +38,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/my-rando/:id/edit" element={<EditRando />} />
               <Route path="/favorites" element={<FavorisListe />} />
               <Route path="/favorites/:id" element={<Favori />} />
+              <Route path="/profile" element={<Profil />} />
             </Route>
           </Route>
           <Route path="*" element={<ErrorPage />} />

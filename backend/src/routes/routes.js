@@ -350,6 +350,60 @@ router.post("/logout", (req, res) => {
   res.sendStatus(200);
 });
 
+router.put("/current-user-infos", async (req, res) => {
+  const {
+    prenom,
+    nom,
+    email,
+    email_origin,
+    pseudo
+  } = req.body;
+
+  try {
+
+    // updating user infos
+    const result = await db.query(
+      `UPDATE utilisateur SET
+        prenom = $1,
+        nom = $2,
+        email = $3,
+        pseudo = $4
+        WHERE email = $5`,
+      [
+        prenom,
+        nom,
+        email,
+        pseudo || null,
+        email_origin]
+    );
+
+    // update randonnees and favori data to still be link to correct user
+    if (email !== email_origin){
+      await db.query(
+        `UPDATE favori SET
+          utilisateur_email = $1
+          WHERE utilisateur_email = $2`,
+        [
+          email,
+          email_origin]
+      );
+
+      await db.query(
+        `UPDATE randonnee SET
+          auteur = $1
+          WHERE auteur = $2`,
+        [ email,email_origin]
+      );
+    }
+
+    res.json(result.rows[0]);
+    
+  } catch (error) {
+    console.error("Erreur update user:", error);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
 // ==================FAVORIS==================
 
 // Mettre en favori une randonnée pour l'utilisateur actuel
