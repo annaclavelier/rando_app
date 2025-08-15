@@ -41,7 +41,7 @@ const Galerie = ({images}:Props) => {
               <div className="card">
                 <div className="img-wrapper">
                   <button className="border-0 bg-transparent p-0" onClick={() => setSelectedImage(image)}>
-                    <img src={`http://localhost:${import.meta.env.VITE_PORT_BACK}/uploads/${image}`} className="d-block w-100" alt="" />
+                    <img src={`${import.meta.env.VITE_API_URL}/uploads/${image}`} className="d-block w-100" alt="" />
                   </button>
                 </div>
               </div>
@@ -66,7 +66,7 @@ const Galerie = ({images}:Props) => {
                 <button type="button" className="btn-close" onClick={() => setSelectedImage(null)}></button>
               </div>
               <div className="modal-body text-center">
-                <img src={`http://localhost:${import.meta.env.VITE_PORT_BACK}/uploads/${selectedImage}`} className="img-fluid" alt="Aperçu" />
+                <img src={`${import.meta.env.VITE_API_URL}/uploads/${selectedImage}`} className="img-fluid" alt="Aperçu" />
               </div>
             </div>
           </div>

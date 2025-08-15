@@ -17,7 +17,7 @@ const CardRando = ({
   titre,
   difficulte,
   massif,
-  image = `http://localhost:${import.meta.env.VITE_PORT_BACK}/uploads/ecoutoux.jpg`,
+  image = `${import.meta.env.VITE_API_URL}/uploads/ecoutoux.jpg`,
   duree,
   km,
   lien
@@ -31,7 +31,7 @@ const CardRando = ({
         <div className="row g-0 h-100">
           <div className="col-md-4 h-100">
             <img
-              src={`http://localhost:${import.meta.env.VITE_PORT_BACK}/uploads/${image}`}
+              src={`${import.meta.env.VITE_API_URL}/uploads/${image}`}
               className="h-100 w-100 rounded-start object-fit-cover"
               alt={titre}
             />

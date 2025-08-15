@@ -31,7 +31,7 @@ function FormRando({ mode }: Props) {
   // Charger les données existantes si mode édition
   useEffect(() => {
     if (mode === "edit" && id) {
-      fetch(`http://localhost:${import.meta.env.VITE_PORT_BACK}/api/randos/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/randos/${id}`, {
         credentials: "include",
       })
         .then((res) => res.json())
@@ -78,8 +78,8 @@ function FormRando({ mode }: Props) {
 
     const url =
       mode === "edit"
-        ? `http://localhost:${import.meta.env.VITE_PORT_BACK}/api/rando/${id}`
-        : `http://localhost:${import.meta.env.VITE_PORT_BACK}/api/rando`;
+        ? `${import.meta.env.VITE_API_URL}/api/rando/${id}`
+        : `${import.meta.env.VITE_API_URL}/api/rando`;
     const method = mode === "edit" ? "PUT" : "POST";
 
     const res = await fetch(url, {
@@ -281,7 +281,7 @@ function FormRando({ mode }: Props) {
             </button>
             <div>
               <img
-                src={`http://localhost:${import.meta.env.VITE_PORT_BACK}/uploads/${form.image}`}
+                src={`${import.meta.env.VITE_API_URL}/uploads/${form.image}`}
                 alt="Image actuelle"
                 className="img-fluid rounded mb-2"
                 style={{ maxHeight: "300px" }}
