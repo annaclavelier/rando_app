@@ -19,6 +19,7 @@ import FavorisListe from "./pages/FavorisListe.tsx";
 import Favori from "./pages/Favori.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import Profil from "./pages/Profil.tsx";
+import ChangePassword from "./pages/ChangePassword.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/favorites" element={<FavorisListe />} />
               <Route path="/favorites/:id" element={<Favori />} />
               <Route path="/profile" element={<Profil />} />
+              <Route path="/change-password" element={<ChangePassword/>}/>
             </Route>
           </Route>
           <Route path="*" element={<ErrorPage />} />
