@@ -14,7 +14,7 @@ const RandoPage = () => {
     const fetchRando = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/randos/${id}`
+          `http://localhost:${import.meta.env.VITE_PORT_BACK}/api/randos/${id}`
         );
         setRando(response.data);
       } catch (error) {

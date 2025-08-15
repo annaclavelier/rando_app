@@ -18,14 +18,14 @@ function MesRandos() {
 
   const deleteRando = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8080/api/rando/${id}`);
+      await axios.delete(`http://localhost:${import.meta.env.VITE_PORT_BACK}/api/rando/${id}`);
     } catch (error) {
       console.error("Erreur lors de la suppression : ", error);
     }
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/mes-randos", {
+    fetch(`http://localhost:${import.meta.env.VITE_PORT_BACK}/api/mes-randos`, {
       credentials: "include",
     })
       .then((res) => res.json())

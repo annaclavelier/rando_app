@@ -55,7 +55,7 @@ const RandoDetails = ({ rando }: Props) => {
         <div>
           <h3>Galerie photos</h3>
           <img
-            src={`/assets/${rando.image}`}
+            src={`http://localhost:${import.meta.env.VITE_PORT_BACK}/uploads/${rando.image}`}
             alt="Rando"
             className="img-fluid rounded shadow-sm"
             style={{ maxHeight: "200px", objectFit: "cover" }}

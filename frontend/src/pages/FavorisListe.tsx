@@ -10,7 +10,7 @@ function FavorisListe() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/favorites", {
+    fetch(`http://localhost:${import.meta.env.VITE_PORT_BACK}/api/favorites`, {
       credentials: "include",
     })
       .then((res) => res.json())
