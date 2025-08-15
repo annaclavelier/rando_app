@@ -17,7 +17,7 @@ const CardRando = ({
   titre,
   difficulte,
   massif,
-  image = "/assets/ecoutoux.jpg",
+  image = "http://localhost:8080/uploads/ecoutoux.jpg",
   duree,
   km,
   lien
@@ -31,7 +31,7 @@ const CardRando = ({
         <div className="row g-0 h-100">
           <div className="col-md-4 h-100">
             <img
-              src={`/assets/${image}`}
+              src={`http://localhost:8080/uploads/${image}`}
               className="h-100 w-100 rounded-start object-fit-cover"
               alt={titre}
             />

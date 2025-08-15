@@ -17,6 +17,8 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
+app.use('/uploads',express.static('uploads', []));
+
 app.use(
   session({
     secret: "secret",
@@ -34,5 +36,5 @@ app.use(
 app.use("/api", routes);
 
 app.listen(PORT, () => {
-  console.log("Serveur started on port 8080");
+  console.log(`Serveur started on port ${PORT}`);
 });

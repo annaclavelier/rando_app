@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const IMAGE_PATH = "../frontend/public/assets";
+const IMAGE_PATH = "uploads";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

@@ -281,7 +281,7 @@ function FormRando({ mode }: Props) {
             </button>
             <div>
               <img
-                src={`/assets/${form.image}`}
+                src={`http://localhost:8080/uploads/${form.image}`}
                 alt="Image actuelle"
                 className="img-fluid rounded mb-2"
                 style={{ maxHeight: "300px" }}
