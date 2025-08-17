@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Alert from "../components/Alert";
 
@@ -9,50 +9,71 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pseudo, setPseudo] = useState("");
+  const [pseudoAlreadyUsed, setPseudoAlreadyUsed] = useState<boolean>(false);
   const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    //TODO check if pseudo already exists
-    e.preventDefault();
-    if (firstName === '' || lastName === '' || email === '' || password === ''){
-      setErrMsg('Veuillez renseigner les champs obligatoires marqués par un astérisque.');
-    }else if (password.length < 8){
-      setErrMsg('Le mot de passe doit contenir au moins 8 caractères.');
-    }else {
-      setErrMsg('');
-      axios
-      .post(
-        "/api/register",
-        JSON.stringify({
-          email: email,
-          prenom: firstName,
-          nom: lastName,
-          pseudo: pseudo,
-          mot_passe: password
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            withCredentials: true,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(JSON.stringify(response?.data));
-        setErrMsg("");
-        if (response.status == 201) {
-          navigate('/login');
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setErrMsg(error.response.data);
+  useEffect(() => {
+    if (pseudo !== "" && pseudo.length >= 1) {
+      // check if this pseudo already exists
+      axios.get("/api/users", { withCredentials: true }).then((res) => {
+        const alreadyUsed =
+          res.data.find((u: any) => u.pseudo === pseudo) != undefined;
+        setPseudoAlreadyUsed(alreadyUsed);
       });
     }
-  };
+  }, [pseudo]);
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (pseudoAlreadyUsed) {
+      setErrMsg(
+        "Veuillez renseigner un pseudo non utilisé ou ne pas en renseigner."
+      );
+    } else if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      password === ""
+    ) {
+      setErrMsg(
+        "Veuillez renseigner les champs obligatoires marqués par un astérisque."
+      );
+    } else if (password.length < 8) {
+      setErrMsg("Le mot de passe doit contenir au moins 8 caractères.");
+    } else {
+      setErrMsg("");
+      axios
+        .post(
+          "/api/register",
+          JSON.stringify({
+            email: email,
+            prenom: firstName,
+            nom: lastName,
+            pseudo: pseudo,
+            mot_passe: password,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              withCredentials: true,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(JSON.stringify(response?.data));
+          setErrMsg("");
+          if (response.status == 201) {
+            navigate("/login");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setErrMsg(error.response.data);
+        });
+    }
+  };
 
   return (
     <div className="container p-5">
@@ -91,7 +112,7 @@ const Register = () => {
             }}
           />
         </div>
-        
+
         <div className="col-12">
           <label htmlFor="email" className="form-label">
             Adresse e-mail*
@@ -107,17 +128,21 @@ const Register = () => {
           />
         </div>
         <div className="col-12">
-          <label htmlFor="text" className="form-label">
+          <label htmlFor="text" className={"form-label "}>
             Pseudo
           </label>
           <input
             type="text"
-            className="form-control"
+            className={
+              "form-control " +
+              (pseudo && (pseudoAlreadyUsed ? "is-invalid" : "is-valid"))
+            }
             value={pseudo}
             onChange={(e) => {
               setPseudo(e.target.value);
             }}
           />
+         {pseudo && pseudoAlreadyUsed && (<div className="invalid-feedback">Le pseudo "{pseudo}" est déjà utilisé.</div>)} 
         </div>
         <div className="col-12">
           <label htmlFor="password" className="form-label">
@@ -127,7 +152,9 @@ const Register = () => {
             type="password"
             className="form-control"
             value={password}
-            onChange={(e) => {setPassword(e.target.value)}}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             required
           />
         </div>
