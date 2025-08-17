@@ -20,6 +20,7 @@ import Favori from "./pages/Favori.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import Profil from "./pages/Profil.tsx";
 import ChangePassword from "./pages/ChangePassword.tsx";
+import Register from "./pages/Register.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/login" element={<Login />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="/rando/:id" element={<Rando />} />
+            <Route path="/register" element={<Register />} />
             <Route element={<AuthenticatedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/my-randos" element={<MesRandos />} />

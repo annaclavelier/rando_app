@@ -293,7 +293,7 @@ router.post("/register", async (req, res) => {
 
     await db.query("INSERT INTO UTILISATEUR VALUES($1, $2, $3, $4, $5)", [
       email,
-      pseudo,
+      pseudo || null,
       hashedPassword,
       nom,
       prenom,

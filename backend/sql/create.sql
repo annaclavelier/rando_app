@@ -1,6 +1,6 @@
 CREATE TABLE UTILISATEUR (
     email varchar(255) PRIMARY KEY,
-    pseudo varchar(255) UNIQUE NULLS NOT DISTINCT,
+    pseudo varchar(255) UNIQUE,
     mot_passe varchar(255) NOT NULL,
     nom varchar(100) NOT NULL ,
     prenom varchar(100) NOT NULL
