@@ -128,6 +128,18 @@ router.get("/randos-search", async (req, res) => {
   }
 });
 
+router.get('/rando-search-min', async (req, res) =>{
+  const { query = "" } = req.query;
+
+  try {
+    const result = await db.query("SELECT titre, id FROM randonnee WHERE titre ILIKE $1 LIMIT 5", [`%${query}%`]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur serveur");
+  }
+});
+
 // ====================DONNEES UTILISATEUR CONNECTE =================
 router.get("/mes-randos", async (req, res) => {
   const email = req.session.user?.email;
