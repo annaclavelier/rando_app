@@ -8,7 +8,7 @@ import axios from "axios";
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
   // recherche
-  const query = searchParams.get("query")?.toLowerCase() ?? ""; 
+  const query = searchParams.get("query")?.toLowerCase() ?? "";
 
   // Résultats
   const [randos, setRandos] = useState<Rando[]>([]);
@@ -57,10 +57,8 @@ const SearchResults = () => {
         <h3>
           {randos.length === 0 && <>Pas de résultat trouvé</>}{" "}
           {randos.length === 1 && <>1 résultat trouvé</>}
-          {randos.length > 1 && (
-            <>{randos.length} résultats trouvés</>
-          )}{" "}
-          pour la recherche "{query}"
+          {randos.length > 1 && <>{randos.length} résultats trouvés</>} pour la
+          recherche "{query}"
         </h3>
 
         <ButtonFilter
@@ -72,9 +70,9 @@ const SearchResults = () => {
       </div>
 
       <hr />
-      <div id="results" className="row gy-4">
+      <div id="results" className="row row-cols-1 row-cols-md-2 g-4">
         {randos.map((item) => (
-          <div className="col-md-6" key={item.id}>
+          <div className="col" key={item.id}>
             <CardRando
               id={item.id}
               titre={item.titre}

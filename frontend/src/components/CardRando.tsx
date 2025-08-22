@@ -20,19 +20,16 @@ const CardRando = ({
   image = `${import.meta.env.VITE_API_URL}/uploads/ecoutoux.jpg`,
   duree,
   km,
-  lien
+  lien,
 }: Props) => {
   return (
-    <div
-      className="card mb-3 card-rando h-100"
-      style={{ maxWidth: "540px", backgroundColor: "#436D3B", flexDirection:"row" }}
-    >
+    <div className="card mb-3 card-rando flex-row">
       <Link to={lien} className="link-light link-underline-opacity-0">
-        <div className="row g-0 h-100">
-          <div className="col-md-4 h-100">
+        <div className="d-flex flex-column flex-md-row h-100">
+          <div className="col-md-4 h-100 img-container">
             <img
               src={`${import.meta.env.VITE_API_URL}/uploads/${image}`}
-              className="h-100 w-100 rounded-start object-fit-cover"
+              className="h-100 w-100 object-fit-cover"
               alt={titre}
             />
           </div>
@@ -40,7 +37,8 @@ const CardRando = ({
             <div className="card-body">
               <h5 className="card-title">{titre}</h5>
               <p className="card-text">
-                {difficulte} - {massif} - {formatHeuresDecimal(parseFloat(duree))} - {km} km
+                {difficulte} - {massif} -{" "}
+                {formatHeuresDecimal(parseFloat(duree))} - {km} km
               </p>
             </div>
           </div>
