@@ -13,7 +13,6 @@ import Dashboard from "./pages/Dashboard.tsx";
 import AuthenticatedRoute from "./components/AuthenticatedRoute.tsx";
 import MesRandos from "./pages/MesRandos.tsx";
 import CreerRando from "./pages/CreerRando.tsx";
-import MaRando from "./pages/MaRando.tsx";
 import EditRando from "./pages/MaRandoEdit.tsx";
 import FavorisListe from "./pages/FavorisListe.tsx";
 import Favori from "./pages/Favori.tsx";
@@ -31,18 +30,18 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/search" element={<SearchResults />} />
-            <Route path="/rando/:id" element={<Rando />} />
+            <Route path="/rando/:id" element={<Rando myRando={false} />} />
             <Route path="/register" element={<Register />} />
             <Route element={<AuthenticatedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/my-randos" element={<MesRandos />} />
               <Route path="/new-rando" element={<CreerRando />} />
-              <Route path="/my-rando/:id" element={<MaRando />} />
+              <Route path="/my-rando/:id" element={<Rando myRando={true} />} />
               <Route path="/my-rando/:id/edit" element={<EditRando />} />
               <Route path="/favorites" element={<FavorisListe />} />
               <Route path="/favorites/:id" element={<Favori />} />
               <Route path="/profile" element={<Profil />} />
-              <Route path="/change-password" element={<ChangePassword/>}/>
+              <Route path="/change-password" element={<ChangePassword />} />
             </Route>
           </Route>
           <Route path="*" element={<ErrorPage />} />

@@ -5,7 +5,7 @@ import { Rando } from "../data/rando";
 import RandoDetails from "../components/RandoDetails";
 import ReturnButton from "../components/ReturnButton";
 
-const RandoPage = () => {
+const RandoPage = ({ myRando }: { myRando: boolean }) => {
   const { id } = useParams();
   const [rando, setRando] = useState<Rando | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,14 @@ const RandoPage = () => {
   return (
     <>
       <div className="container pt-4">
-        <ReturnButton link={-1} text="Retour aux résultats de la recherche" />
+        <ReturnButton
+          link={myRando ? "/my-randos" : -1}
+          text={
+            myRando
+              ? "Retour à mes randonnées"
+              : "Retour aux résultats de la recherche"
+          }
+        />
       </div>
       <RandoDetails rando={rando} />
     </>
