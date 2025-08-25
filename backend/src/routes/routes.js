@@ -128,11 +128,14 @@ router.get("/randos-search", async (req, res) => {
   }
 });
 
-router.get('/rando-search-min', async (req, res) =>{
+router.get("/rando-search-min", async (req, res) => {
   const { query = "" } = req.query;
 
   try {
-    const result = await db.query("SELECT titre, id FROM randonnee WHERE titre ILIKE $1 LIMIT 5", [`%${query}%`]);
+    const result = await db.query(
+      "SELECT titre, id FROM randonnee WHERE titre ILIKE $1 LIMIT 5",
+      [`%${query}%`]
+    );
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -235,55 +238,64 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
 });
 
 // Add rando for current-user
-router.post("/rando", upload.single("image"), async (req, res) => {
-  const imageName = req.file ? req.file.filename : "";
+router.post(
+  "/rando",
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "trace", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    const image = req.files["image"] ? req.files["image"][0].filename : null;
+    const trace = req.files["trace"] ? req.files["trace"][0].filename : null;
 
-  if (!req.session.user) {
-    return res.status(401).json({ message: "Non autorisé" });
+    if (!req.session.user) {
+      return res.status(401).json({ message: "Non autorisé" });
+    }
+
+    const {
+      titre,
+      description,
+      difficulte,
+      denivele,
+      altitude_depart,
+      altitude_arrivee,
+      duree,
+      km,
+      massif,
+    } = req.body;
+
+    if (!titre || !description) {
+      return res
+        .status(400)
+        .json({ message: "Titre et description sont obligatoires." });
+    }
+
+    try {
+      const email = req.session.user.email;
+      await db.query(
+        "INSERT INTO RANDONNEE(titre, description,difficulte,denivele,altitude_depart, altitude_arrivee, duree, km, massif, image, auteur, trace) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11, $12)",
+        [
+          titre,
+          description,
+          difficulte || null,
+          denivele ?? null,
+          altitude_depart ?? null,
+          altitude_arrivee ?? null,
+          duree ?? null,
+          km ?? null,
+          massif || null,
+          image,
+          email,
+          trace
+        ]
+      );
+      res.status(201).send("Randonnée créée avec succès");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
   }
-
-  const {
-    titre,
-    description,
-    difficulte,
-    denivele,
-    altitude_depart,
-    altitude_arrivee,
-    duree,
-    km,
-    massif,
-  } = req.body;
-
-  if (!titre || !description) {
-    return res
-      .status(400)
-      .json({ message: "Titre et description sont obligatoires." });
-  }
-
-  try {
-    const email = req.session.user.email;
-    await db.query(
-      "INSERT INTO RANDONNEE(titre, description,difficulte,denivele,altitude_depart, altitude_arrivee, duree, km, massif, image, auteur) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
-      [
-        titre,
-        description,
-        difficulte || null,
-        denivele ?? null,
-        altitude_depart ?? null,
-        altitude_arrivee ?? null,
-        duree ?? null,
-        km ?? null,
-        massif || null,
-        imageName,
-        email,
-      ]
-    );
-    res.status(201).send("Randonnée créée avec succès");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Erreur serveur");
-  }
-});
+);
 
 // ==========================UTILISATEURS============================
 router.get("/users", async (req, res) => {
@@ -363,16 +375,9 @@ router.post("/logout", (req, res) => {
 });
 
 router.put("/current-user-infos", async (req, res) => {
-  const {
-    prenom,
-    nom,
-    email,
-    email_origin,
-    pseudo
-  } = req.body;
+  const { prenom, nom, email, email_origin, pseudo } = req.body;
 
   try {
-
     // updating user infos
     const result = await db.query(
       `UPDATE utilisateur SET
@@ -381,35 +386,27 @@ router.put("/current-user-infos", async (req, res) => {
         email = $3,
         pseudo = $4
         WHERE email = $5`,
-      [
-        prenom,
-        nom,
-        email,
-        pseudo || null,
-        email_origin]
+      [prenom, nom, email, pseudo || null, email_origin]
     );
 
     // update randonnees and favori data to still be link to correct user
-    if (email !== email_origin){
+    if (email !== email_origin) {
       await db.query(
         `UPDATE favori SET
           utilisateur_email = $1
           WHERE utilisateur_email = $2`,
-        [
-          email,
-          email_origin]
+        [email, email_origin]
       );
 
       await db.query(
         `UPDATE randonnee SET
           auteur = $1
           WHERE auteur = $2`,
-        [ email,email_origin]
+        [email, email_origin]
       );
     }
 
     res.json(result.rows[0]);
-    
   } catch (error) {
     console.error("Erreur update user:", error);
     res.status(500).json({ error: "Erreur serveur" });

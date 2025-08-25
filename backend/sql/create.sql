@@ -19,7 +19,8 @@ CREATE TABLE RANDONNEE(
     massif varchar(40),
     image varchar(255),
     publique boolean DEFAULT false,
-    auteur varchar REFERENCES UTILISATEUR(email) ON DELETE CASCADE
+    auteur varchar REFERENCES UTILISATEUR(email) ON DELETE CASCADE,
+    trace varchar(255)
 );
 
 CREATE TABLE IMAGE_SECONDAIRE(

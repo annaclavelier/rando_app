@@ -27,6 +27,7 @@ function FormRando({ mode }: Props) {
     publique: false,
   });
   const [image, setImage] = useState<File | null>(null);
+  const [trace, setTrace] = useState<File | null>(null);
 
   // Charger les données existantes si mode édition
   useEffect(() => {
@@ -58,6 +59,12 @@ function FormRando({ mode }: Props) {
     }
   };
 
+  const handleTraceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setTrace(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
@@ -74,6 +81,10 @@ function FormRando({ mode }: Props) {
 
     if (image) {
       formData.append("image", image);
+    }
+
+    if (trace) {
+      formData.append("trace", trace);
     }
 
     const url =
@@ -246,7 +257,10 @@ function FormRando({ mode }: Props) {
       <div className="mb-3">
         <div className="d-flex align-items-center mb-1">
           <span className="me-2 fw-semibold">Visibilité</span>
-          <TooltipButton text_tooltip="Si vous cochez cette case, votre randonnée sera publique pour tous les utilisateurs." >   <FontAwesomeIcon icon={faCircleQuestion} /></TooltipButton>
+          <TooltipButton text_tooltip="Si vous cochez cette case, votre randonnée sera publique pour tous les utilisateurs.">
+            {" "}
+            <FontAwesomeIcon icon={faCircleQuestion} />
+          </TooltipButton>
         </div>
 
         <div className="form-check form-switch">
@@ -275,7 +289,7 @@ function FormRando({ mode }: Props) {
             <button
               type="button"
               className="btn btn-outline-primary btn-sm"
-              onClick={() => setImage(null)} // forcer l'affichage du champ fichier
+              onClick={() => setForm({...form, image: ""})} // forcer l'affichage du champ fichier
             >
               Changer l'image
             </button>
@@ -304,6 +318,44 @@ function FormRando({ mode }: Props) {
           />
         </div>
       )}
+
+{mode === "edit" && form.trace && !trace && (
+        <div className="mb-3">
+          <label htmlFor="Tracé actuel" className="form-label fw-semibold">
+            Tracé actuel
+          </label>
+
+          <div>
+          {form.trace} 
+
+            <button
+              type="button"
+              className="btn btn-outline-primary btn-sm"
+              onClick={() => setForm({...form, trace: ""})} // forcer l'affichage du champ fichier
+            >
+              Changer le tracé
+            </button>
+            <div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+{(!form.trace || trace) && (
+
+      <div className="mb-4">
+        <label
+          htmlFor="Tracé de la randonnée"
+          className="form-label fw-semibold"
+        >
+          Tracé
+        </label>
+        <div className="form-text">Charger votre tracé au format GeoJson. Utilisez <a href="https://geojson.io" target="_blank" >geojson.io</a> pour créer vos tracés.</div>
+
+        <input type="file" className="form-control" accept=".geojson"  onChange={handleTraceChange}/>
+      </div>
+)}
 
       <button className="btn btn-primary" type="submit">
         {mode === "edit" ? "Mettre à jour" : "Enregistrer"}
