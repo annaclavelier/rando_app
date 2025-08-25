@@ -15,6 +15,7 @@ export interface Rando {
   galerie?: string[];
   auteur?: string;
   publique: boolean;
+  trace?: string;
 }
 
 export class RandoModel implements Rando {
@@ -33,6 +34,7 @@ export class RandoModel implements Rando {
   km!: number;
   auteur?: string;
   publique!: boolean;
+  trace?: string;
 
   constructor(data: Rando) {
     Object.assign(this, data);

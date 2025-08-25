@@ -5,6 +5,10 @@
   color: #a9f0cd;
 }
 
+.leaflet{
+  height: 300px;
+}
+
 @media (min-width: 768px) {
   .card-rando {
     height: 150px;

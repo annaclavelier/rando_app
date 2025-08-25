@@ -20,6 +20,7 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import Profil from "./pages/Profil.tsx";
 import ChangePassword from "./pages/ChangePassword.tsx";
 import Register from "./pages/Register.tsx";
+import "leaflet/dist/leaflet.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
