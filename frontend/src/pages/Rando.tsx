@@ -4,7 +4,6 @@ import axios from "axios";
 import { Rando } from "../data/rando";
 import RandoDetails from "../components/RandoDetails";
 import ReturnButton from "../components/ReturnButton";
-import MapWithGeoJson from "../components/MapWithGeoJson";
 
 const RandoPage = ({ myRando }: { myRando: boolean }) => {
   const { id } = useParams();
@@ -44,9 +43,6 @@ const RandoPage = ({ myRando }: { myRando: boolean }) => {
         />
       </div>
       <RandoDetails rando={rando} />
-      <div className="leaflet">
-        <MapWithGeoJson geojsonFile={rando.trace} />
-      </div>
     </>
   );
 };
