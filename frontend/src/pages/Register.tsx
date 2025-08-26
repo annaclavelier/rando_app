@@ -76,7 +76,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container p-5">
+    <div className="container pt-4">
       <div className="h3">Créer votre compte</div>
 
       <Alert visible={!!errMsg} theme="danger">

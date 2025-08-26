@@ -4,7 +4,7 @@ import FormRando from "../components/FormRando";
 function CreerRando() {
 
   return (
-    <div className="container p-5">
+    <div className="container pt-4">
       <ReturnButton link={"/my-randos"} text="Retour à mes randonnées" />
 
       <h2>Créer une randonnée</h2>

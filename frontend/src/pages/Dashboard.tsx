@@ -5,10 +5,11 @@ function Dashboard() {
   const { auth } = useAuth();
 
   return (
-      <div className="container p-5">
+      <div className="container pt-4">
         <div className="h3">
           Bonjour <span className="text-capitalize">{auth?.prenom}</span> !
         </div>
+        <hr/>
         <div>
           <Link to="/my-randos">Mes randonnées</Link>
         </div>

@@ -36,9 +36,9 @@ function MesRandos() {
       .catch(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="container p-5">Chargement...</div>;
+  if (loading) return <div className="container pt-4">Chargement...</div>;
   return (
-    <div className="container p-5">
+    <div className="container pt-4">
       <div className="h3">Mes randonnées</div>
       <hr />
       <button

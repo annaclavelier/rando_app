@@ -3,7 +3,7 @@ import ReturnButton from "../components/ReturnButton";
 
 function EditRando() {
   return (
-    <div className="container p-5">
+    <div className="container pt-4">
       <ReturnButton link="/my-randos" text="Retour à mes randonnées" />
 
       <h2>Modifier la randonnée</h2>

@@ -51,7 +51,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="container p-5">
+    <div className="container pt-4">
       <div className="h3">Changer de mot de passe</div>
       <hr />
 

@@ -31,19 +31,17 @@ const RandoPage = ({ myRando }: { myRando: boolean }) => {
   if (!rando) return <div>Rando non trouvée.</div>;
 
   return (
-    <>
-      <div className="container pt-4">
-        <ReturnButton
-          link={myRando ? "/my-randos" : -1}
-          text={
-            myRando
-              ? "Retour à mes randonnées"
-              : "Retour aux résultats de la recherche"
-          }
-        />
-      </div>
+    <div className="container pt-4">
+      <ReturnButton
+        link={myRando ? "/my-randos" : -1}
+        text={
+          myRando
+            ? "Retour à mes randonnées"
+            : "Retour aux résultats de la recherche"
+        }
+      />
       <RandoDetails rando={rando} />
-    </>
+    </div>
   );
 };
 

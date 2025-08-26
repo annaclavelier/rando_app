@@ -52,7 +52,7 @@ const SearchResults = () => {
   }, [query, activeFilters]);
 
   return (
-    <div className="container p-5">
+    <div className="container pt-4">
       <div className="d-flex justify-content-between align-items-center">
         <h3>
           {randos.length === 0 && <>Pas de résultat trouvé</>}{" "}

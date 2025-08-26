@@ -50,7 +50,7 @@ const Login = () => {
       });
   };
   return (
-    <div className="container p-5">
+    <div className="container pt-4">
       <div className="h3">Connexion</div>
 
       <Alert visible={!!errMsg} theme="danger">

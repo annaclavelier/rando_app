@@ -14,7 +14,7 @@ const RandoDetails = ({ rando }: Props) => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="container p-4">
+    <>
       <div className="d-flex align-items-center justify-content-between">
         <h1 className="mb-0">{rando.titre}</h1>
         {isAuthenticated ? (
@@ -75,7 +75,7 @@ const RandoDetails = ({ rando }: Props) => {
         </div>
       )}
       <br />
-    </div>
+    </>
   );
 };
 

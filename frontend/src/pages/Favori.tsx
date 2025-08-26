@@ -34,7 +34,7 @@ function Favori() {
   if (!rando) return <div>Rando non trouvée.</div>;
 
   return (
-    <div className="container p-5">
+    <div className="container pt-4">
       <ReturnButton link={"/favorites"} text="Retour aux favoris" />
 
       <RandoDetails rando={rando} />
