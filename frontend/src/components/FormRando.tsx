@@ -20,7 +20,6 @@ function FormRando({ mode }: Props) {
     difficulte: "Facile",
     denivele: undefined,
     altitude_depart: undefined,
-    altitude_arrivee: undefined,
     duree: undefined,
     massif: "Chartreuse",
     publique: false,
@@ -205,21 +204,6 @@ function FormRando({ mode }: Props) {
             className="form-control"
             name="altitude_depart"
             value={form.altitude_depart ?? ""}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="col-md-4 mb-3">
-          <label
-            htmlFor="Altitude arrivée en mètres"
-            className="form-label fw-semibold"
-          >
-            Altitude arrivée (m)
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            name="altitude_arrivee"
-            value={form.altitude_arrivee ?? ""}
             onChange={handleChange}
           />
         </div>
