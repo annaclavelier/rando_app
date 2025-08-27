@@ -6,6 +6,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const IMAGE_PATH = "uploads";
+const turf = require('@turf/turf');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -160,7 +161,10 @@ router.get("/mes-randos", async (req, res) => {
 });
 
 // Update
-router.put("/rando/:id", upload.single("image"), async (req, res) => {
+router.put("/rando/:id",  upload.fields([
+  { name: "image", maxCount: 1 },
+  { name: "trace", maxCount: 1 },
+]), async (req, res) => {
   const randoId = req.params.id;
   const {
     titre,
@@ -170,7 +174,6 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
     altitude_depart,
     altitude_arrivee,
     duree,
-    km,
     massif,
     publique,
   } = req.body;
@@ -190,13 +193,27 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
     const oldImage = existing.rows[0].image;
     let newImagePath = oldImage;
 
-    if (req.file) {
-      newImagePath = req.file.filename;
+    if (req.files && req.files["image"]) {
+      newImagePath = req.files["image"] ? req.files["image"][0].filename : null;
 
       // Supprimer l'ancienne image si elle existe
       if (oldImage && fs.existsSync(path.join(IMAGE_PATH, oldImage))) {
         fs.unlinkSync(path.join(IMAGE_PATH, oldImage));
       }
+    }
+
+    const traceFile = req.files["trace"] ? req.files["trace"][0] : null;
+
+    let kilometers = 0;
+
+    if (traceFile) {
+      // Read geojson file
+      const rawData = fs.readFileSync(traceFile.path, "utf-8");
+      const geojson = JSON.parse(rawData);
+      // Compute total length
+      kilometers = turf.length(geojson, { units: "kilometers" });
+      // By default hike is back and forth
+      kilometers =(kilometers * 2).toFixed(1);
     }
 
     const result = await db.query(
@@ -211,7 +228,8 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
         km = $8,
         massif = $9,
         image = $10,
-        publique = $12
+        publique = $12,
+        trace = $13
       WHERE id = $11
       RETURNING *`,
       [
@@ -222,11 +240,12 @@ router.put("/rando/:id", upload.single("image"), async (req, res) => {
         altitude_depart || null,
         altitude_arrivee || null,
         duree || null,
-        km || null,
+        kilometers || null,
         massif || null,
         newImagePath,
         randoId,
         publique,
+        traceFile  ? traceFile.filename : null
       ]
     );
 
@@ -246,7 +265,18 @@ router.post(
   ]),
   async (req, res) => {
     const image = req.files["image"] ? req.files["image"][0].filename : null;
-    const trace = req.files["trace"] ? req.files["trace"][0].filename : null;
+    const traceFile = req.files["trace"] ? req.files["trace"][0] : null;
+    let kilometers = 0;
+
+    if (traceFile) {
+      // Read geojson file
+      const rawData = fs.readFileSync(traceFile.path, "utf-8");
+      const geojson = JSON.parse(rawData);
+      // Compute total length
+      kilometers = turf.length(geojson, { units: "kilometers" });
+      // By default hike is back and forth
+      kilometers =(kilometers * 2).toFixed(1);
+    }
 
     if (!req.session.user) {
       return res.status(401).json({ message: "Non autorisé" });
@@ -260,7 +290,6 @@ router.post(
       altitude_depart,
       altitude_arrivee,
       duree,
-      km,
       massif,
     } = req.body;
 
@@ -282,11 +311,11 @@ router.post(
           altitude_depart ?? null,
           altitude_arrivee ?? null,
           duree ?? null,
-          km ?? null,
+          kilometers ?? null,
           massif || null,
           image,
           email,
-          trace
+          traceFile.filename
         ]
       );
       res.status(201).send("Randonnée créée avec succès");

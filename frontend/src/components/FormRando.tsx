@@ -22,7 +22,6 @@ function FormRando({ mode }: Props) {
     altitude_depart: undefined,
     altitude_arrivee: undefined,
     duree: undefined,
-    km: undefined,
     massif: "Chartreuse",
     publique: false,
   });
@@ -224,7 +223,7 @@ function FormRando({ mode }: Props) {
             onChange={handleChange}
           />
         </div>
-        <div className="col-md-2 mb-3">
+        <div className="col-md-4 mb-3">
           <label htmlFor="durée" className="form-label fw-semibold">
             Durée (h)
           </label>
@@ -235,22 +234,7 @@ function FormRando({ mode }: Props) {
             name="duree"
             value={form.duree ?? ""}
             onChange={handleChange}
-          />
-        </div>
-        <div className="col-md-2 mb-3">
-          <label
-            htmlFor="Distance en kilomètres"
-            className="form-label fw-semibold"
-          >
-            Distance (km)
-          </label>
-          <input
-            type="number"
-            step="0.1"
-            className="form-control"
-            name="km"
-            value={form.km ?? ""}
-            onChange={handleChange}
+            
           />
         </div>
       </div>
@@ -289,7 +273,7 @@ function FormRando({ mode }: Props) {
             <button
               type="button"
               className="btn btn-outline-primary btn-sm"
-              onClick={() => setForm({...form, image: ""})} // forcer l'affichage du champ fichier
+              onClick={() => setForm({ ...form, image: "" })} // forcer l'affichage du champ fichier
             >
               Changer l'image
             </button>
@@ -319,43 +303,51 @@ function FormRando({ mode }: Props) {
         </div>
       )}
 
-{mode === "edit" && form.trace && !trace && (
+      {mode === "edit" && form.trace && !trace && (
         <div className="mb-3">
           <label htmlFor="Tracé actuel" className="form-label fw-semibold">
             Tracé actuel
           </label>
 
           <div>
-          {form.trace} 
+            {form.trace}
 
             <button
               type="button"
               className="btn btn-outline-primary btn-sm"
-              onClick={() => setForm({...form, trace: ""})} // forcer l'affichage du champ fichier
+              onClick={() => setForm({ ...form, trace: "" })} // forcer l'affichage du champ fichier
             >
               Changer le tracé
             </button>
-            <div>
-            </div>
+            <div></div>
           </div>
         </div>
       )}
 
+      {(!form.trace || trace) && (
+        <div className="mb-4">
+          <label
+            htmlFor="Tracé de la randonnée"
+            className="form-label fw-semibold"
+          >
+            Tracé
+          </label>
+          <div className="form-text">
+            Charger votre tracé au format GeoJson. Utilisez{" "}
+            <a href="https://geojson.io" target="_blank">
+              geojson.io
+            </a>{" "}
+            pour créer vos tracés.
+          </div>
 
-{(!form.trace || trace) && (
-
-      <div className="mb-4">
-        <label
-          htmlFor="Tracé de la randonnée"
-          className="form-label fw-semibold"
-        >
-          Tracé
-        </label>
-        <div className="form-text">Charger votre tracé au format GeoJson. Utilisez <a href="https://geojson.io" target="_blank" >geojson.io</a> pour créer vos tracés.</div>
-
-        <input type="file" className="form-control" accept=".geojson"  onChange={handleTraceChange}/>
-      </div>
-)}
+          <input
+            type="file"
+            className="form-control"
+            accept=".geojson"
+            onChange={handleTraceChange}
+          />
+        </div>
+      )}
 
       <button className="btn btn-primary" type="submit">
         {mode === "edit" ? "Mettre à jour" : "Enregistrer"}
