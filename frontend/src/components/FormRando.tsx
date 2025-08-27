@@ -19,7 +19,6 @@ function FormRando({ mode }: Props) {
     description: "",
     difficulte: "Facile",
     denivele: undefined,
-    altitude_depart: undefined,
     duree: undefined,
     massif: "Chartreuse",
     publique: false,
@@ -193,21 +192,6 @@ function FormRando({ mode }: Props) {
 
       <div className="row">
         <div className="col-md-4 mb-3">
-          <label
-            htmlFor="altitude de départ"
-            className="form-label fw-semibold"
-          >
-            Altitude départ (m)
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            name="altitude_depart"
-            value={form.altitude_depart ?? ""}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="col-md-4 mb-3">
           <label htmlFor="durée" className="form-label fw-semibold">
             Durée (h)
           </label>
@@ -218,7 +202,6 @@ function FormRando({ mode }: Props) {
             name="duree"
             value={form.duree ?? ""}
             onChange={handleChange}
-            
           />
         </div>
       </div>

@@ -47,3 +47,14 @@ export function getEndElevation(geojson){
   }
   return null;
 }
+
+
+export function getStartElevation(geojson){
+  for (const f of geojson.features) {   
+    if (f.geometry.type === "Point" && f.properties?.name === "start") {
+      const [, , ele] = f.geometry.coordinates;
+      return ele;
+    }
+  }
+  return null;
+}
