@@ -14,6 +14,8 @@ CREATE TABLE RANDONNEE(
     denivele int,
     altitude_depart int,
     altitude_arrivee int,
+    altitude_max int,
+    altitude_min int,
     duree decimal,
     km decimal,
     massif varchar(40),

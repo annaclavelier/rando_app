@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const IMAGE_PATH = "uploads";
 const turf = require('@turf/turf');
-const { addElevationToGeoJSON, getEndElevation, getStartElevation } = require("../utils/geojsonUtils.js");
+const { addElevationToGeoJSON, getEndElevation, getStartElevation, getMaxElevation, getMinElevation } = require("../utils/geojsonUtils.js");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -203,12 +203,12 @@ router.put("/rando/:id",  upload.fields([
 
     const traceFile = req.files["trace"] ? req.files["trace"][0] : null;
 
-    let kilometers, endElevation, startElevation = null;
+    let kilometers, endElevation, startElevation, maxElevation, minElevation = null;
 
     if (traceFile) {
       // Read geojson file
       const rawData = fs.readFileSync(traceFile.path, "utf-8");
-      const geojson = JSON.parse(rawData);
+      let geojson = JSON.parse(rawData);
       // Compute total length
       kilometers = turf.length(geojson, { units: "kilometers" });
       // By default hike is back and forth
@@ -221,6 +221,9 @@ router.put("/rando/:id",  upload.fields([
       // Compute elevation of start and end
       endElevation = getEndElevation(geojson);
       startElevation = getStartElevation(geojson);
+      // Compute max and min elevation
+      maxElevation = getMaxElevation(geojson);
+      minElevation = getMinElevation(geojson);
     }
 
     const result = await db.query(
@@ -236,7 +239,9 @@ router.put("/rando/:id",  upload.fields([
         massif = COALESCE($9, massif),
         image = COALESCE($10, image),
         publique = COALESCE($12, publique),
-        trace = COALESCE($13, trace)
+        trace = COALESCE($13, trace),
+        altitude_max = COALESCE($14, altitude_max),
+        altitude_min = COALESCE($15, altitude_min)
       WHERE id = $11
       RETURNING *`,
       [
@@ -252,7 +257,9 @@ router.put("/rando/:id",  upload.fields([
         newImagePath,
         randoId,
         publique,
-        traceFile  ? traceFile.filename : null
+        traceFile  ? traceFile.filename : null,
+        maxElevation,
+        minElevation
       ]
     );
 
@@ -273,7 +280,7 @@ router.post(
   async (req, res) => {
     const image = req.files["image"] ? req.files["image"][0].filename : null;
     const traceFile = req.files["trace"] ? req.files["trace"][0] : null;
-    let kilometers, endElevation, startElevation = null;
+    let kilometers, endElevation, startElevation, maxElevation, minElevation = null;
 
     if (traceFile) {
       // Read geojson file
@@ -291,6 +298,9 @@ router.post(
       // Compute elevation of start and end
       endElevation = getEndElevation(geojson);
       startElevation = getStartElevation(geojson);
+      // Compute max and min elevation
+      maxElevation = getMaxElevation(geojson);
+      minElevation = getMinElevation(geojson);
     }
 
     if (!req.session.user) {
@@ -316,7 +326,7 @@ router.post(
     try {
       const email = req.session.user.email;
       await db.query(
-        "INSERT INTO RANDONNEE(titre, description,difficulte,denivele,altitude_depart, altitude_arrivee, duree, km, massif, image, auteur, trace, publique) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11, $12,$13 )",
+        "INSERT INTO RANDONNEE(titre, description,difficulte,denivele,altitude_depart, altitude_arrivee, duree, km, massif, image, auteur, trace, publique, altitude_max, altitude_min) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11, $12,$13, $14, $15 )",
         [
           titre,
           description,
@@ -330,7 +340,9 @@ router.post(
           image,
           email,
           traceFile.filename,
-          publique
+          publique,
+          maxElevation,
+          minElevation
         ]
       );
       res.status(201).send("Randonnée créée avec succès");

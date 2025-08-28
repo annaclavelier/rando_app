@@ -37,9 +37,8 @@ export async function addElevationToGeoJSON(geojson) {
   return geojson;
 }
 
-
-export function getEndElevation(geojson){
-  for (const f of geojson.features) {   
+export function getEndElevation(geojson) {
+  for (const f of geojson.features) {
     if (f.geometry.type === "Point" && f.properties?.name === "end") {
       const [, , ele] = f.geometry.coordinates;
       return ele;
@@ -48,9 +47,8 @@ export function getEndElevation(geojson){
   return null;
 }
 
-
-export function getStartElevation(geojson){
-  for (const f of geojson.features) {   
+export function getStartElevation(geojson) {
+  for (const f of geojson.features) {
     if (f.geometry.type === "Point" && f.properties?.name === "start") {
       const [, , ele] = f.geometry.coordinates;
       return ele;
@@ -58,3 +56,43 @@ export function getStartElevation(geojson){
   }
   return null;
 }
+
+export function getMinElevation(geojson) {
+  let min = 10000;
+  for (const f of geojson.features) {
+    if (f.geometry.type === "Point") {
+      if (f.geometry.coordinates[2] < min) {
+        min = f.geometry.coordinates[2];
+      }
+    } else if (f.geometry.type === "LineString") {
+      f.geometry.coordinates = f.geometry.coordinates.forEach(([, , ele]) => {
+        if (ele < min) {
+          min = ele;
+        }
+      });
+    }
+   
+  }
+  return min;
+}
+
+export function getMaxElevation(geojson) {
+  let max = -Infinity;
+
+  for (const f of geojson.features) {
+    if (f.geometry.type === "Point") {
+      if (f.geometry.coordinates[2] > max) {
+        max = f.geometry.coordinates[2];
+      }
+    } else if (f.geometry.type === "LineString") {
+      f.geometry.coordinates.forEach(([, , ele]) => {
+        if (ele > max) {
+          max = ele;
+        }
+      });
+    }
+  }
+
+  return max;
+}
+
