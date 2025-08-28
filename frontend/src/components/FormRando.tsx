@@ -21,6 +21,7 @@ function FormRando({ mode }: Props) {
     duree: undefined,
     massif: "Chartreuse",
     publique: false,
+    aller_retour: true,
   });
   const [image, setImage] = useState<File | null>(null);
   const [trace, setTrace] = useState<File | null>(null);
@@ -207,6 +208,27 @@ function FormRando({ mode }: Props) {
 
           <label className="form-check-label" htmlFor="switchVisibilite">
             Publique
+          </label>
+        </div>
+      </div>
+
+      <div className="mb-3">
+        <div className="d-flex align-items-center mb-1">
+          <span className="me-2 fw-semibold">Format du circuit</span>
+        </div>
+
+        <div className="form-check form-switch">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="switchVisibilite"
+            name="aller_retour"
+            checked={form.aller_retour}
+            onChange={handleChange}
+          />
+
+          <label className="form-check-label" htmlFor="switchVisibilite">
+            Aller-retour
           </label>
         </div>
       </div>
