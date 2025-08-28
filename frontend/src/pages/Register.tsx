@@ -46,7 +46,7 @@ const Register = () => {
       setErrMsg("");
       axios
         .post(
-          "/api/register",
+          "/api/users",
           JSON.stringify({
             email: email,
             prenom: firstName,

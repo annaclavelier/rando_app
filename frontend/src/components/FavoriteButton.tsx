@@ -29,7 +29,7 @@ const FavoriteButton = ({
       setIsFavorite(false);
     } else {
       await axios.post(
-        `/api/favorite/${randoId}`,
+        `/api/favorites/${randoId}`,
         {},
         {
           withCredentials: true,

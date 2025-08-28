@@ -15,7 +15,7 @@ const SearchBar = () => {
   useEffect(() => {
     if (searchTerm !== "" && searchTerm.length >= 3) {
       axios
-        .get(`/api/rando-search-min?query=${searchTerm}`, {
+        .get(`/api/randos/search-min?query=${searchTerm}`, {
           withCredentials: true,
         })
         .then((res) => {

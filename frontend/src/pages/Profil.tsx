@@ -16,7 +16,7 @@ function Profil() {
     e.preventDefault();
     axios
       .put(
-        "/api/current-user-infos",
+        "/api/current-user",
         JSON.stringify({
           email: email,
           prenom: prenom,

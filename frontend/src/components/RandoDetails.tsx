@@ -42,6 +42,7 @@ const RandoDetails = ({ rando }: Props) => {
                 m
               </h5>
             )}
+            {rando.aller_retour ? "Aller-retour" : "Boucle"}
 
           <p>{rando.description}</p>
         </div>

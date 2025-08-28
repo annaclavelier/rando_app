@@ -18,7 +18,7 @@ const ChangePassword = () => {
       // set error message
     } else if (password.length < 8) {
       // set error message
-      setErrorMsg("Le mots de passe doit contenir au moins 8 caractères.");
+      setErrorMsg("Le mot de passe doit contenir au moins 8 caractères.");
     } else {
       // save new password and redirect to my account
       setErrorMsg("");

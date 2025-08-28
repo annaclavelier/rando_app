@@ -86,8 +86,8 @@ function FormRando({ mode }: Props) {
 
     const url =
       mode === "edit"
-        ? `${import.meta.env.VITE_API_URL}/api/rando/${id}`
-        : `${import.meta.env.VITE_API_URL}/api/rando`;
+        ? `${import.meta.env.VITE_API_URL}/api/randos/${id}`
+        : `${import.meta.env.VITE_API_URL}/api/randos`;
     const method = mode === "edit" ? "PUT" : "POST";
 
     const res = await fetch(url, {

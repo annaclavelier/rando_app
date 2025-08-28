@@ -41,7 +41,7 @@ const SearchResults = () => {
     //  Recherche selon filtres et query
     axios
       .get(
-        `/api/randos-search?query=${query}&difficulte=${activeFilters.difficulty}&duration=${activeFilters.duration}&massif=${activeFilters.massif}&denivele=${activeFilters.denivele}`
+        `/api/randos/search?query=${query}&difficulte=${activeFilters.difficulty}&duration=${activeFilters.duration}&massif=${activeFilters.massif}&denivele=${activeFilters.denivele}`
       )
       .then((response) => {
         setRandos(response.data);
