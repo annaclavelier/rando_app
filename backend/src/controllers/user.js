@@ -99,6 +99,26 @@ async function updateUser(req, res) {
   }
 }
 
+async function updatePasswordUser(req, res) {
+  const { mot_passe, email } = req.body;
+
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Non autorisé" });
+  }
+
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(mot_passe, saltRounds);
+    await userService.updatePasswordUser(hashedPassword, email);
+    res.json("Mot de passe mis à jour avec succès");
+  } catch (error) {
+    console.error("Erreur update user:", error);
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la mise à jour du mot de passe" });
+  }
+}
+
 module.exports = {
   getAllUsers,
   getCurrentUser,
@@ -106,4 +126,5 @@ module.exports = {
   login,
   createUser,
   updateUser,
+  updatePasswordUser,
 };

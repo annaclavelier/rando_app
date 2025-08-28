@@ -60,10 +60,20 @@ async function updateUser(updatedUser, originEmail) {
   return result.rows[0];
 }
 
+async function updatePasswordUser(updatedPassword, userEmail) {
+  const result = await db.query(
+    `UPDATE utilisateur SET  mot_passe = $1 WHERE email = $2`,
+    [updatedPassword, userEmail]
+  );
+
+  return result.rows[0];
+}
+
 module.exports = {
   getAllUsers,
   getUserByEmail,
   updateUserByEmail,
   createUser,
   updateUser,
+  updatePasswordUser
 };

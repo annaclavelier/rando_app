@@ -23,7 +23,7 @@ const ChangePassword = () => {
       // save new password and redirect to my account
       setErrorMsg("");
       axios
-        .put(
+        .post(
           "/api/change-password",
           JSON.stringify({
             email: auth?.email,
