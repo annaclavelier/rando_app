@@ -18,6 +18,7 @@ export interface Rando {
   auteur?: string;
   publique: boolean;
   trace?: string;
+  aller_retour: boolean;
 }
 
 export class RandoModel implements Rando {
@@ -39,6 +40,8 @@ export class RandoModel implements Rando {
   auteur?: string;
   publique!: boolean;
   trace?: string;
+  aller_retour!: boolean;
+
 
   constructor(data: Rando) {
     Object.assign(this, data);
