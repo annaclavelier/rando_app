@@ -6,7 +6,7 @@ async function getAllRandos() {
 }
 
 async function getAllRandosByUser(userEmail) {
-  const result = await db.query("SELECT * FROM randonnee where auteur = $1", [
+  const result = await db.query("SELECT * FROM randonnee WHERE auteur = $1", [
     userEmail,
   ]);
   return result.rows;
@@ -22,7 +22,6 @@ async function getRandoById(id) {
   );
 
   const rando = result.rows[0];
-  // Add image galery with secondary images
   rando.galerie = galerie.rows.map((img) => img.chemin);
   return rando;
 }
@@ -35,11 +34,11 @@ async function deleteRandoById(id) {
 async function createRando(newRando) {
   const query = `
     INSERT INTO RANDONNEE(
-    titre, description, difficulte, denivele, altitude_depart, altitude_arrivee, duree,
-    km, massif, image, auteur, trace, publique, altitude_max, altitude_min, denivele_negatif
+      titre, description, difficulte, denivele, altitude_depart, altitude_arrivee, duree,
+      km, massif, image, auteur, trace, publique, altitude_max, altitude_min, denivele_negatif
     ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
     RETURNING *;
-    `;
+  `;
 
   const values = [
     newRando.titre,
@@ -71,18 +70,18 @@ async function updateRando(id, updatedRando) {
         description = COALESCE($2, description),
         difficulte = COALESCE($3, difficulte),
         denivele = COALESCE($4, denivele),
-        denivele_negatif = COALESCE($4, denivele_negatif),
-        altitude_depart = COALESCE($5,altitude_depart),
-        altitude_arrivee = COALESCE($6, altitude_arrivee),
-        duree = COALESCE($7, duree),
-        km = COALESCE($8, km),
-        massif = COALESCE($9, massif),
-        image = COALESCE($10, image),
-        publique = COALESCE($11, publique),
-        trace = COALESCE($12, trace),
-        altitude_max = COALESCE($13, altitude_max),
-        altitude_min = COALESCE($14, altitude_min)
-      WHERE id = $15
+        denivele_negatif = COALESCE($5, denivele_negatif),
+        altitude_depart = COALESCE($6, altitude_depart),
+        altitude_arrivee = COALESCE($7, altitude_arrivee),
+        duree = COALESCE($8, duree),
+        km = COALESCE($9, km),
+        massif = COALESCE($10, massif),
+        image = COALESCE($11, image),
+        publique = COALESCE($12, publique),
+        trace = COALESCE($13, trace),
+        altitude_max = COALESCE($14, altitude_max),
+        altitude_min = COALESCE($15, altitude_min)
+      WHERE id = $16
       RETURNING *`,
     [
       updatedRando.titre,
@@ -95,8 +94,9 @@ async function updateRando(id, updatedRando) {
       updatedRando.duree,
       updatedRando.km,
       updatedRando.massif,
+      updatedRando.image,
       updatedRando.publique,
-      tupdatedRando.trace,
+      updatedRando.trace,
       updatedRando.altitude_max,
       updatedRando.altitude_min,
       id,
@@ -107,14 +107,10 @@ async function updateRando(id, updatedRando) {
 }
 
 async function updateAuthorFromItsRandos(newUserEmail, originEmail) {
-  const result = await db.query(
-    `UPDATE randonnee SET
-      auteur = $1
-      WHERE auteur = $2`,
-    [email, email_origin]
+  await db.query(
+    `UPDATE randonnee SET auteur = $1 WHERE auteur = $2`,
+    [newUserEmail, originEmail]
   );
-
-  return result.rows[0];
 }
 
 async function findRandosByTitle(title) {
@@ -125,16 +121,10 @@ async function findRandosByTitle(title) {
   return result.rows;
 }
 
-async function searchPublicRandos(
-  query,
-  difficulte,
-  duration,
-  massif,
-  denivele
-) {
+async function searchPublicRandos(query, difficulte, duration, massif, denivele) {
   let sql =
     "SELECT * FROM randonnee WHERE LOWER(titre) LIKE $1 AND publique=true";
-  const params = [query];
+  const params = [`%${query.toLowerCase()}%`];
   let i = 2;
 
   if (difficulte) {
@@ -144,15 +134,10 @@ async function searchPublicRandos(
   }
 
   if (duration) {
-    if (duration === "moins d'1h") {
-      sql += " AND duree < 1 ";
-    } else if (duration == "1h à 2h") {
-      sql += " AND duree >= 1 AND duree <= 2";
-    } else if (duration == "2h à 3h") {
-      sql += " AND duree >= 2 AND duree <= 3";
-    } else if (duration == "plus de 3h") {
-      sql += " AND duree > 3";
-    }
+    if (duration === "moins d'1h") sql += " AND duree < 1";
+    else if (duration === "1h à 2h") sql += " AND duree >= 1 AND duree <= 2";
+    else if (duration === "2h à 3h") sql += " AND duree >= 2 AND duree <= 3";
+    else if (duration === "plus de 3h") sql += " AND duree > 3";
   }
 
   if (massif) {
@@ -162,22 +147,15 @@ async function searchPublicRandos(
   }
 
   if (denivele) {
-    // filtrer selon catégories
-    if (denivele === "moins de 300m") {
-      sql += ` AND denivele < 300`;
-    } else if (denivele === "300 à 500m") {
-      sql += ` AND denivele >= 300 AND denivele < 500`;
-    } else if (denivele === "500 à 800m") {
-      sql += ` AND denivele >= 500 AND denivele < 800`;
-    } else if (denivele === "800 à 1000m") {
-      sql += ` AND denivele >= 800 AND denivele < 1000`;
-    } else if (denivele === "plus 1000m") {
-      sql += ` AND denivele >= 1000`;
-    }
-
-    const result = await db.query(sql, params);
-    return result.rows;
+    if (denivele === "moins de 300m") sql += ` AND denivele < 300`;
+    else if (denivele === "300 à 500m") sql += ` AND denivele >= 300 AND denivele < 500`;
+    else if (denivele === "500 à 800m") sql += ` AND denivele >= 500 AND denivele < 800`;
+    else if (denivele === "800 à 1000m") sql += ` AND denivele >= 800 AND denivele < 1000`;
+    else if (denivele === "plus 1000m") sql += ` AND denivele >= 1000`;
   }
+
+  const result = await db.query(sql, params);
+  return result.rows;
 }
 
 module.exports = {

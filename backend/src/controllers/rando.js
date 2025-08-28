@@ -23,7 +23,7 @@ async function getAllRandos(req, res) {
 
 async function getRandoById(req, res) {
   try {
-    const randoId = req.params.id;
+    const randoId = parseInt(req.params.id);
     const rando = await randoService.getRandoById(randoId);
     if (!rando) {
       return res.status(404).json({ message: "Randonnée non trouvée" });
@@ -241,7 +241,7 @@ async function searchPublicRandos(req, res) {
       massif,
       denivele
     );
-    res.json(result.rows);
+    res.json(randos);
   } catch (err) {
     console.error(err);
     res.status(500).send("Erreur lors de la récupération des randonnées");

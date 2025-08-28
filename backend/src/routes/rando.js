@@ -18,15 +18,25 @@ const upload = multer({ storage });
 
 router.get("/", randoController.getAllRandos);
 
-router.get("/:id", randoController.getRandoById);
-
-router.delete("/:id", randoController.deleteRandoById);
+// Add rando for current-user
+router.post(
+  "/",
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "trace", maxCount: 1 },
+  ]),
+  randoController.createRando
+);
 
 router.get("/search", randoController.searchPublicRandos);
 
 router.get("/search-min", randoController.findRandosByTitle);
 
 router.get("/current-user", randoController.getRandoByUser);
+
+router.get("/:id", randoController.getRandoById);
+
+router.delete("/:id", randoController.deleteRandoById);
 
 // Update
 router.put(
@@ -36,16 +46,6 @@ router.put(
     { name: "trace", maxCount: 1 },
   ]),
   randoController.updateRando
-);
-
-// Add rando for current-user
-router.post(
-  "/",
-  upload.fields([
-    { name: "image", maxCount: 1 },
-    { name: "trace", maxCount: 1 },
-  ]),
-  randoController.createRando
 );
 
 module.exports = router;
