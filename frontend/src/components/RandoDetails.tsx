@@ -29,31 +29,89 @@ const RandoDetails = ({ rando }: Props) => {
       <hr />
       <div className="row">
         <div className="col">
-          <h3>
-            {rando.difficulte} - {rando.massif} -{" "}
-            {formatHeuresDecimal(parseFloat(rando.duree))}
-          </h3>
-          {rando.altitude_depart &&
-            rando.altitude_arrivee &&
-            rando.denivele && (
-              <h5>
-                Départ : {rando.altitude_depart}m - Arrivée :{" "}
-                {rando.altitude_arrivee} m - Dénivelé positif : {rando.denivele}{" "}
-                m
-              </h5>
-            )}
-            {rando.aller_retour ? "Aller-retour" : "Boucle"}
+          <div className="row">
+            <div className="col-xs-12 col-md-4">
+              {" "}
+              <ul className="list-unstyled">
+                <li>
+                  <span className="fw-semibold">Massif : </span>
+                  {rando.massif}
+                </li>
+                <li>
+                  <span className="fw-semibold">
+                    Distance {rando.aller_retour ? "(A/R)" : ""} :{" "}
+                  </span>
+                  {rando.km}km
+                </li>
+                <li>
+                  <span className="fw-semibold">Altitude départ : </span>
+                  {rando.altitude_depart}m
+                </li>
+                <li>
+                  <span className="fw-semibold">Altitude max : </span>
+                  {rando.altitude_max}m
+                </li>
+              </ul>
+            </div>
+            <div className="col-xs-12 col-md-4">
+              {" "}
+              <ul className="list-unstyled">
+                <li>
+                  <span className="fw-semibold">Niveau : </span>
+                  {rando.difficulte}
+                </li>
+                <li>
+                  <span className="fw-semibold">
+                    Dénivelé + {rando.aller_retour ? "(aller)" : ""} :{" "}
+                  </span>
+                  {rando.denivele}m
+                </li>
+                <li>
+                  <span className="fw-semibold">Altitude arrivée : </span>
+                  {rando.altitude_arrivee}m
+                </li>
+                <li>
+                  <span className="fw-semibold">Altitude min : </span>
+                  {rando.altitude_min}m
+                </li>
+              </ul>
+            </div>
+
+            <div className="col-xs-12 col-md-4">
+              {" "}
+              <ul className="list-unstyled">
+                <li>
+                  <span className="fw-semibold">Durée : </span>{" "}
+                  {formatHeuresDecimal(parseFloat(rando.duree))}
+                </li>
+
+                <li>
+                  <span className="fw-semibold">
+                    Dénivelé - {rando.aller_retour ? "(aller)" : ""} :{" "}
+                  </span>
+                  {rando.denivele_negatif}m
+                </li>
+
+                <li>
+                  <span className="fw-semibold">Aller-retour : </span>
+                  {rando.aller_retour ? "Oui" : "Non"}
+                </li>
+              </ul>
+            </div>
+          </div>
 
           <p>{rando.description}</p>
         </div>
 
-        {rando.trace ? (<div className="col" style={{height:"500px"}}>
-          <div className="leaflet">
-            <MapWithGeoJson geojsonFile={rando.trace} />
+        {rando.trace ? (
+          <div className="col" style={{ height: "500px" }}>
+            <div className="leaflet">
+              <MapWithGeoJson geojsonFile={rando.trace} />
+            </div>
           </div>
-        </div>) : (<div className="col bg-dark-subtle" style={{height:"500px"}}>
-        </div>)}
-        
+        ) : (
+          <div className="col bg-dark-subtle" style={{ height: "500px" }}></div>
+        )}
       </div>
       <br />
 

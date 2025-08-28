@@ -8,6 +8,7 @@ export interface Rando {
   description?: string;
   duree: string;
   denivele?: number;
+  denivele_negatif?: number;
   altitude_depart?: number;
   point_vue?: boolean;
   remarques?: string;
@@ -30,6 +31,7 @@ export class RandoModel implements Rando {
   description?: string;
   duree!: string;
   denivele?: number;
+  denivele_negatif?: number;
   altitude_depart?: number;
   altitude_arrivee?: number;
   altitude_max?: number;
