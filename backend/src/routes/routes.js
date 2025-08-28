@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const IMAGE_PATH = "uploads";
 const turf = require('@turf/turf');
-const { addElevationToGeoJSON, getEndElevation, getStartElevation, getMaxElevation, getMinElevation } = require("../utils/geojsonUtils.js");
+const { addElevationToGeoJSON, getEndElevation, getStartElevation, getMaxElevation, getMinElevation, computeElevationGainLoss } = require("../utils/geojsonUtils.js");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -171,7 +171,6 @@ router.put("/rando/:id",  upload.fields([
     titre,
     description,
     difficulte,
-    denivele,
     duree,
     massif,
     publique,
@@ -203,7 +202,7 @@ router.put("/rando/:id",  upload.fields([
 
     const traceFile = req.files["trace"] ? req.files["trace"][0] : null;
 
-    let kilometers, endElevation, startElevation, maxElevation, minElevation = null;
+    let kilometers = endElevation = startElevation = maxElevation = minElevation = dPlus = dMoins = null;
 
     if (traceFile) {
       // Read geojson file
@@ -224,6 +223,8 @@ router.put("/rando/:id",  upload.fields([
       // Compute max and min elevation
       maxElevation = getMaxElevation(geojson);
       minElevation = getMinElevation(geojson);
+      // Compute elevation gain and loss
+      ({dPlus, dMoins} = computeElevationGainLoss(geojson));
     }
 
     const result = await db.query(
@@ -232,6 +233,7 @@ router.put("/rando/:id",  upload.fields([
         description = COALESCE($2, description),
         difficulte = COALESCE($3, difficulte),
         denivele = COALESCE($4, denivele),
+        denivele_negatif = COALESCE($16, denivele_negatif),
         altitude_depart = COALESCE($5,altitude_depart),
         altitude_arrivee = COALESCE($6, altitude_arrivee),
         duree = COALESCE($7, duree),
@@ -248,7 +250,7 @@ router.put("/rando/:id",  upload.fields([
         titre || null,
         description || null,
         difficulte || null,
-        denivele || null,
+        dPlus,
         startElevation,
         endElevation,
         duree || null,
@@ -259,7 +261,8 @@ router.put("/rando/:id",  upload.fields([
         publique,
         traceFile  ? traceFile.filename : null,
         maxElevation,
-        minElevation
+        minElevation,
+        dMoins
       ]
     );
 
@@ -280,7 +283,7 @@ router.post(
   async (req, res) => {
     const image = req.files["image"] ? req.files["image"][0].filename : null;
     const traceFile = req.files["trace"] ? req.files["trace"][0] : null;
-    let kilometers, endElevation, startElevation, maxElevation, minElevation = null;
+    let kilometers, endElevation, startElevation, maxElevation, minElevation, dPlus, dMoins = null;
 
     if (traceFile) {
       // Read geojson file
@@ -301,6 +304,8 @@ router.post(
       // Compute max and min elevation
       maxElevation = getMaxElevation(geojson);
       minElevation = getMinElevation(geojson);
+      dPlus, dMoins = computeElevationGainLoss(geojson);
+
     }
 
     if (!req.session.user) {
@@ -311,7 +316,6 @@ router.post(
       titre,
       description,
       difficulte,
-      denivele,
       duree,
       massif,
       publique
@@ -326,12 +330,13 @@ router.post(
     try {
       const email = req.session.user.email;
       await db.query(
-        "INSERT INTO RANDONNEE(titre, description,difficulte,denivele,altitude_depart, altitude_arrivee, duree, km, massif, image, auteur, trace, publique, altitude_max, altitude_min) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11, $12,$13, $14, $15 )",
+        `INSERT INTO RANDONNEE(titre, description,difficulte,denivele,altitude_depart, altitude_arrivee, duree, km, massif, image, auteur, trace, publique, altitude_max, altitude_min,denivele_negatif) 
+        VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11, $12,$13, $14, $15, $16 )`
         [
           titre,
           description,
           difficulte || null,
-          denivele ?? null,
+          dPlus,
           startElevation,
           endElevation,
           duree ?? null,
@@ -342,7 +347,8 @@ router.post(
           traceFile.filename,
           publique,
           maxElevation,
-          minElevation
+          minElevation,
+          dMoins
         ]
       );
       res.status(201).send("Randonnée créée avec succès");

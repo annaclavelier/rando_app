@@ -18,7 +18,6 @@ function FormRando({ mode }: Props) {
     titre: "",
     description: "",
     difficulte: "Facile",
-    denivele: undefined,
     duree: undefined,
     massif: "Chartreuse",
     publique: false,
@@ -173,24 +172,6 @@ function FormRando({ mode }: Props) {
             <option value="Difficile">Difficile</option>
           </select>
         </div>
-        <div className="col-md-4 mb-3">
-          <label
-            htmlFor="denivelé en mètres"
-            className="form-label fw-semibold"
-          >
-            Dénivelé (m)
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            name="denivele"
-            value={form.denivele ?? ""}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-
-      <div className="row">
         <div className="col-md-4 mb-3">
           <label htmlFor="durée" className="form-label fw-semibold">
             Durée (h)

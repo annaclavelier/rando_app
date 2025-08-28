@@ -12,6 +12,7 @@ CREATE TABLE RANDONNEE(
     description text,
     difficulte varchar(40),
     denivele int,
+    denivele_negatif int,
     altitude_depart int,
     altitude_arrivee int,
     altitude_max int,

@@ -65,13 +65,12 @@ export function getMinElevation(geojson) {
         min = f.geometry.coordinates[2];
       }
     } else if (f.geometry.type === "LineString") {
-      f.geometry.coordinates = f.geometry.coordinates.forEach(([, , ele]) => {
+      f.geometry.coordinates.forEach(([, , ele]) => {
         if (ele < min) {
           min = ele;
         }
       });
     }
-   
   }
   return min;
 }
@@ -96,3 +95,27 @@ export function getMaxElevation(geojson) {
   return max;
 }
 
+export function computeElevationGainLoss(geojson) {
+  let dPlus = 0;
+  let dMoins = 0;
+
+  for (const f of geojson.features) {
+    if (f.geometry.type === "LineString") {
+      const coords = f.geometry.coordinates;
+      for (let i = 1; i < coords.length; i++) {
+        const prevAlt = coords[i - 1][2] || 0; // altitude précédente
+        const currAlt = coords[i][2] || 0; // altitude actuelle
+        const diff = currAlt - prevAlt;
+
+        if (diff > 0) {
+          // montée
+          dPlus += diff; 
+        } else {
+          // descente
+          dMoins += Math.abs(diff); 
+        }
+      }
+    }
+  }
+  return { dPlus, dMoins };
+}
