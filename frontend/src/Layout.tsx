@@ -6,11 +6,9 @@ const Layout = () => {
   return (
     <>
       <NavbarCustom />
-      <div className="container-fluid">
-          {/* Contenu principal */}
-          <div className="p-0">
-            <Outlet />
-        </div>
+      <div className="container-fluid p-0">
+        {/* Contenu principal */}
+        <Outlet />
       </div>
     </>
   );
