@@ -4,21 +4,25 @@ import TooltipButton from "../components/TooltipButton";
 import CardRando from "../components/CardRando";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
+import { favoriteService } from "../services/favoriteService";
 
 function FavorisListe() {
   const [favoris, setFavoris] = useState<Rando[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/favorites`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setFavoris(data);
+    async function fetchFavorites() {
+      try {
+        const favoris: Rando[] =
+          await favoriteService.getCurrentUserFavorites();
+        setFavoris(favoris);
+      } catch (error) {
+        console.log(error);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    }
+    fetchFavorites();
   }, []);
 
   if (loading) return <div className="container pt-4">Chargement...</div>;

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+import { favoriteService } from "../services/favoriteService";
+import { Rando } from "../data/rando";
 
 const FavoriteButton = ({
   randoId,
-  disabled=false,
+  disabled = false,
 }: {
   randoId: number;
   disabled: boolean;
@@ -14,27 +15,22 @@ const FavoriteButton = ({
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    // Initialiser depuis l'API
-    axios.get("/api/favorites", { withCredentials: true }).then((res) => {
-      const favoris = res.data.map((r: any) => r.id);
-      setIsFavorite(favoris.includes(randoId));
-    });
+    async function init() {
+      // Initialiser depuis l'API
+      const favorites: Rando[] =
+        await favoriteService.getCurrentUserFavorites();
+      const favoritesId = favorites.map((r: any) => r.id);
+      setIsFavorite(favoritesId.includes(randoId));
+    }
+    init();
   }, [randoId]);
 
   const toggleFavori = async () => {
     if (isFavorite) {
-      await axios.delete(`/api/favorites/${randoId}`, {
-        withCredentials: true,
-      });
+      await favoriteService.removeFavorite(randoId);
       setIsFavorite(false);
     } else {
-      await axios.post(
-        `/api/favorites/${randoId}`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      await favoriteService.addFavorite(randoId);
       setIsFavorite(true);
     }
   };
