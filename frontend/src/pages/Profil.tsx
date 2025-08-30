@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import Alert from "../components/Alert";
+import { userService } from "../services/userService";
+import { User } from "../data/user";
 
 function Profil() {
   const { auth, setAuth } = useAuth();
@@ -14,34 +15,20 @@ function Profil() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .put(
-        "/api/current-user",
-        JSON.stringify({
-          email: email,
-          prenom: prenom,
-          nom: nom,
-          pseudo: pseudo,
-          email_origin: auth?.email,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            withCredentials: true,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(JSON.stringify(response?.data));
-        setErrMsg("");
-        if (response.status == 200) {
-          setAuth(response.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setErrMsg(error.response.data);
+
+    try {
+      const updatedUser: User = await userService.updateUser({
+        email: email,
+        prenom: prenom,
+        nom: nom,
+        pseudo: pseudo,
+        email_origin: auth?.email,
       });
+
+      if (updatedUser) setAuth(updatedUser);
+    } catch (error) {
+      setErrMsg(error);
+    }
   };
 
   return (

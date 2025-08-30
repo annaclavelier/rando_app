@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "../components/Alert";
 import { useAuth } from "../context/AuthContext";
+import { userService } from "../services/userService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,31 +23,14 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .post(
-        "/api/login",
-        JSON.stringify({
-          email: email,
-          mot_passe: password,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            withCredentials: true,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(JSON.stringify(response?.data));
-        if (response.status == 200) {
-          navigate("/dashboard");
-          setAuth(response.data.utilisateur);
-          console.log("connecté");
-        }
-      })
-      .catch((error) => {
-        setErrMsg(error.response.data);
-      });
+
+    try {
+      const { utilisateur } = await userService.login(email, password);
+      setAuth(utilisateur);
+      navigate("/dashboard");
+    } catch (error: any) {
+      setErrMsg(error.response?.data || "Erreur de connexion");
+    }
   };
   return (
     <div className="container pt-4">

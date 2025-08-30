@@ -1,5 +1,11 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import axios from "axios";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import { userService } from "../services/userService";
 
 interface User {
   pseudo: string;
@@ -20,10 +26,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<User | null>(null);
 
   useEffect(() => {
-    axios
-      .get("/api/current-user", { withCredentials: true })
-      .then(res => setAuth(res.data))
-      .catch(() => setAuth(null));
+    async function setUser() {
+      try {
+        const user: User = await userService.getCurrentUser();
+        setAuth(user);
+      } catch {
+        setAuth(null);
+      }
+    }
+
+    setUser();
   }, []);
 
   return (

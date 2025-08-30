@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Alert from "../components/Alert";
+import { userService } from "../services/userService";
+import { User } from "../data/user";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -17,11 +19,14 @@ const Register = () => {
   useEffect(() => {
     if (pseudo !== "" && pseudo.length >= 1) {
       // check if this pseudo already exists
-      axios.get("/api/users", { withCredentials: true }).then((res) => {
+      async function fetchUsers() {
+        const users: User[] = await userService.getAlltUsers();
         const alreadyUsed =
-          res.data.find((u: any) => u.pseudo === pseudo) != undefined;
+          users.find((u: User) => u.pseudo === pseudo) != undefined;
         setPseudoAlreadyUsed(alreadyUsed);
-      });
+      }
+
+      fetchUsers();
     }
   }, [pseudo]);
 
@@ -142,7 +147,11 @@ const Register = () => {
               setPseudo(e.target.value);
             }}
           />
-         {pseudo && pseudoAlreadyUsed && (<div className="invalid-feedback">Le pseudo "{pseudo}" est déjà utilisé.</div>)} 
+          {pseudo && pseudoAlreadyUsed && (
+            <div className="invalid-feedback">
+              Le pseudo "{pseudo}" est déjà utilisé.
+            </div>
+          )}
         </div>
         <div className="col-12">
           <label htmlFor="password" className="form-label">

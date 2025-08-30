@@ -15,9 +15,9 @@ import {
   DropdownMenu,
 } from "reactstrap";
 import { useState } from "react";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { userService } from "../services/userService";
 
 const NavbarComponent = () => {
   const { auth, setAuth } = useAuth();
@@ -26,7 +26,7 @@ const NavbarComponent = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await axios.post("/api/logout", {}, { withCredentials: true });
+    await userService.logout();
     setAuth(null);
   };
 
@@ -62,7 +62,7 @@ const NavbarComponent = () => {
                   isOpen={dropdownOpen}
                   toggle={toggleDropdown}
                   direction={"down"}
-                  flip={true}
+                  flip
                 >
                   <DropdownToggle caret color="success">
                     <FontAwesomeIcon icon={faCircleUser} />{" "}
