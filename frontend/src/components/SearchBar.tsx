@@ -1,8 +1,9 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { randoService } from "../services/randoService";
+import { Rando } from "../data/rando";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -13,19 +14,16 @@ const SearchBar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    async function fetchSuggestions() {
+      try {
+        const randos: Rando[] = await randoService.searchMin(searchTerm);
+        setSuggestions(randos);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     if (searchTerm !== "" && searchTerm.length >= 3) {
-      axios
-        .get(`/api/randos/search-min?query=${searchTerm}`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          if (res.status == 200) {
-            setSuggestions(res.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      fetchSuggestions();
     } else {
       setSuggestions([]);
     }

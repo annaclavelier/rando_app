@@ -59,8 +59,9 @@ async function deleteRandoById(req, res) {
 }
 
 async function createRando(req, res) {
-  const image = req.files["image"] ? req.files["image"][0].filename : null;
-  const traceFile = req.files["trace"] ? req.files["trace"][0] : null;
+  const image = req.files?.image?.[0]?.filename || null;
+  const traceFile = req.files?.trace?.[0] || null;
+
   let kilometers,
     endElevation,
     startElevation,
@@ -119,7 +120,7 @@ async function createRando(req, res) {
       altitude_arrivee: endElevation,
       altitude_max: maxElevation,
       altitude_min: minElevation,
-      trace: traceFile.filename,
+      trace: traceFile?.filename,
       auteur: email,
       image: image,
       denivele_negatif: dMoins,
@@ -136,7 +137,7 @@ async function updateRando(req, res) {
   const randoId = req.params.id;
   const { titre, description, difficulte, duree, massif, publique } = req.body;
 
-  const foundRando = randoService.getRandoById(randoId);
+  const foundRando = await randoService.getRandoById(randoId);
   if (!foundRando) {
     return res.status(404).json({ message: "Randonnée non trouvée" });
   }
@@ -145,7 +146,7 @@ async function updateRando(req, res) {
     return res.status(403).json({ error: "Accès refusé" });
   }
 
-  const oldImage = existing.rows[0].image;
+  const oldImage = foundRando.image;
   let newImagePath = oldImage;
 
   if (req.files && req.files["image"]) {
@@ -157,7 +158,7 @@ async function updateRando(req, res) {
     }
   }
 
-  const traceFile = req.files["trace"] ? req.files["trace"][0] : null;
+  const traceFile = req.files?.trace ? req.files?.trace?.[0] : null;
 
   let kilometers =
     (endElevation =
@@ -205,9 +206,9 @@ async function updateRando(req, res) {
       altitude_arrivee: endElevation,
       altitude_max: maxElevation,
       altitude_min: minElevation,
-      trace: traceFile.filename,
-      auteur: email,
-      image: image,
+      trace: traceFile ? traceFile.filename : "",
+      auteur: req.session.user?.email,
+      image: newImagePath,
       denivele_negatif: dMoins,
     };
     randoService.updateRando(randoId, rando);

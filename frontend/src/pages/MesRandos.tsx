@@ -8,8 +8,8 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
-import axios from "axios";
 import { formatHeuresDecimal } from "../utils/FormatHours";
+import { randoService } from "../services/randoService";
 
 function MesRandos() {
   const [randos, setRandos] = useState<Rando[]>([]);
@@ -18,22 +18,25 @@ function MesRandos() {
 
   const deleteRando = async (id: number) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/randos/${id}`);
+      await randoService.delete(id);
     } catch (error) {
       console.error("Erreur lors de la suppression : ", error);
     }
   };
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/randos/current-user`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setRandos(data);
+    async function fetchRandos() {
+      try {
+        const randos: Rando[] = await randoService.getCurrentUserRandos();
+        setRandos(randos);
+      } catch (error) {
+        console.error("Erreur chargement:", error);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    }
+
+    fetchRandos();
   }, []);
 
   if (loading) return <div className="container pt-4">Chargement...</div>;
@@ -70,7 +73,11 @@ function MesRandos() {
               <tr key={rando.id}>
                 <td>{rando.titre}</td>
                 <td>{rando.massif}</td>
-                <td>{rando.duree && (<>{formatHeuresDecimal(parseFloat(rando.duree))}</>)}</td>
+                <td>
+                  {rando.duree && (
+                    <>{formatHeuresDecimal(parseFloat(rando.duree))}</>
+                  )}
+                </td>
                 <td>{rando.difficulte}</td>
                 <td>{rando.denivele && `${rando.denivele}m`}</td>
                 <td>{rando.publique ? "Publique" : "Privée"}</td>

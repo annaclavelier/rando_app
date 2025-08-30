@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Rando } from "../data/rando";
 import RandoDetails from "../components/RandoDetails";
 import ReturnButton from "../components/ReturnButton";
+import { randoService } from "../services/randoService";
 
 const RandoPage = ({ myRando }: { myRando: boolean }) => {
   const { id } = useParams();
@@ -13,10 +13,8 @@ const RandoPage = ({ myRando }: { myRando: boolean }) => {
   useEffect(() => {
     const fetchRando = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/randos/${id}`
-        );
-        setRando(response.data);
+        const data = await randoService.getById(parseInt(id ?? "-1"));
+        setRando(data);
       } catch (error) {
         console.error("Erreur lors du chargement de la rando", error);
       } finally {

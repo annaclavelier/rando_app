@@ -5,6 +5,7 @@ import { Rando } from "../data/rando";
 import TooltipButton from "./TooltipButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
+import { randoService } from "../services/randoService";
 
 interface Props {
   mode: "create" | "edit";
@@ -28,13 +29,16 @@ function FormRando({ mode }: Props) {
 
   // Charger les données existantes si mode édition
   useEffect(() => {
+    async function fetchRando() {
+      try {
+        const rando: Rando = await randoService.getById(id);
+        setForm(rando);
+      } catch (error) {
+        console.error("Erreur chargement:", error);
+      }
+    }
     if (mode === "edit" && id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/randos/${id}`, {
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then((data) => setForm(data))
-        .catch((err) => console.error("Erreur chargement:", err));
+      fetchRando();
     }
   }, [id, mode]);
 
@@ -84,22 +88,22 @@ function FormRando({ mode }: Props) {
       formData.append("trace", trace);
     }
 
-    const url =
-      mode === "edit"
-        ? `${import.meta.env.VITE_API_URL}/api/randos/${id}`
-        : `${import.meta.env.VITE_API_URL}/api/randos`;
-    const method = mode === "edit" ? "PUT" : "POST";
-
-    const res = await fetch(url, {
-      method,
-      body: formData,
-      credentials: "include",
-    });
-
-    if (res.ok) {
-      navigate("/my-randos");
+    if (mode === "create") {
+      try {
+        await randoService.create(formData);
+        navigate("/my-randos");
+      } catch (error) {
+        console.log(error);
+        alert("Erreur lors de l'enregistrement");
+      }
     } else {
-      alert("Erreur lors de l'enregistrement");
+      try {
+        await randoService.update(formData, id);
+        navigate("/my-randos");
+      } catch (error) {
+        console.log(error);
+        alert("Erreur lors de l'enregistrement");
+      }
     }
   };
 

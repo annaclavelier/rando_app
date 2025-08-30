@@ -3,7 +3,7 @@ import { Rando } from "../data/rando";
 import CardRando from "../components/CardRando";
 import ButtonFilter from "../components/ButtonFilter";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { randoService } from "../services/randoService";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -38,17 +38,22 @@ const SearchResults = () => {
 
   // on appelle useEffect que si les filtres effectifs sont modifiés ou la query
   useEffect(() => {
-    //  Recherche selon filtres et query
-    axios
-      .get(
-        `/api/randos/search?query=${query}&difficulte=${activeFilters.difficulty}&duration=${activeFilters.duration}&massif=${activeFilters.massif}&denivele=${activeFilters.denivele}`
-      )
-      .then((response) => {
-        setRandos(response.data);
-      })
-      .catch((error) => {
+    async function fetchSearchRandos() {
+      //  Recherche selon filtres et query
+      try {
+        const randos = await randoService.search(
+          query,
+          activeFilters.difficulty,
+          activeFilters.duration,
+          activeFilters.massif,
+          activeFilters.denivele
+        );
+        setRandos(randos);
+      } catch (error) {
         console.error("Erreur lors du chargement des randonnées :", error);
-      });
+      }
+    }
+    fetchSearchRandos();
   }, [query, activeFilters]);
 
   return (

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import ReturnButton from "../components/ReturnButton";
 import { useParams } from "react-router";
 import { Rando } from "../data/rando";
-import axios from "axios";
 import RandoDetails from "../components/RandoDetails";
+import { randoService } from "../services/randoService";
 
 function Favori() {
   const { id } = useParams();
@@ -12,18 +12,16 @@ function Favori() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRando = async () => {
+    async function fetchRando() {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/randos/${id}`
-        );
-        setRando(response.data);
+        const rando: Rando = await randoService.getById(id);
+        setRando(rando);
       } catch (error) {
         console.error("Erreur lors du chargement de la rando", error);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     if (id) {
       fetchRando();
